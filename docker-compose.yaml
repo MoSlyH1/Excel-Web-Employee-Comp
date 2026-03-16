@@ -1,0 +1,39 @@
+services:
+
+  db:
+    image: postgres:16
+    container_name: employee_db
+    restart: always
+    environment:
+      POSTGRES_DB: employeehub
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/employee_Hub_backup.sql:/docker-entrypoint-initdb.d/init.sql
+  backend:
+    build: ./Backend
+    container_name: employee_backend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: employeehub
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+
+  frontend:
+    build: ./Frontend
+    container_name: employee_frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:

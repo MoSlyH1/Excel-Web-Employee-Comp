@@ -1,0 +1,33 @@
+name: employee_hub
+description: Employee Management Hub
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.2.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  http: ^1.2.0
+  http_parser: ^4.0.0
+  file_picker: ^8.0.0+1
+  pdf: ^3.11.0
+  intl: ^0.19.0
+  google_fonts: ^6.1.0
+  url_launcher: ^6.2.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/fonts/NotoSansArabic-Regular.ttf
+    - assets/fonts/NotoSansArabic-Bold.ttf
+    - assets/r4_template_blank.png
+    - assets/r1_3_template_blank.png
+    - assets/r3_template_blank.png
+    
