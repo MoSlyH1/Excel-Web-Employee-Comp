@@ -2,7 +2,15 @@
 
 Employee Hub is a full-stack employee management system designed to store and manage employee information and documents.
 
+
+To download the project locally, run:
+
+git clone https://github.com/MoSlyH1/Excel-Web-Employee-Comp.git
+cd Excel-Web-Employee-Comp
+
+This will create a local copy of the project on your machine.
 The system consists of:
+
 
 * **Frontend:** Flutter Web application
 * **Backend:** Node.js (Express API)
