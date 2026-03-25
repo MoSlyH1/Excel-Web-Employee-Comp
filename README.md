@@ -36,7 +36,7 @@ Make sure the following software is installed:
 
 From the project root directory run:
 
-docker compose up --build
+docker compose up --build -d
 
 Docker will automatically:
 
@@ -45,7 +45,18 @@ Docker will automatically:
 * Build the Flutter frontend
 * Load the provided database backup
 
----
+
+
+docker run -it --rm \
+  -e NGROK_AUTHTOKEN=YOUR_REAL_TOKEN \
+  --network host \
+  ngrok/ngrok http http://127.0.0.1:8080
+
+
+auth_token= 3B3sZPbxeCSKhNb23UhaiNymRJu_82RyXiQjCQ7LJkj43VvoM
+
+open ngork forwading link to get website access. In this case it's https://unburnished-cori-nonduplicating.ngrok-free.dev
+--- 
 
 ## Access the Application
 
@@ -186,3 +197,15 @@ docker compose down
 # Notes
 
 The entire application environment is containerized, meaning the project can run on any machine with Docker installed without requiring manual setup of Node.js, PostgreSQL, or Flutter.
+
+
+Here’s your fixed house model:
+
+main.dart → 🚪 front door
+homescreen.dart → 🛋️ living room
+widgets/ → 🪑 furniture & small rooms
+employee.dart → 🪪 ID card template
+api_service.dart → 📞 phone line to outside
+server.js → 🧠 manager / brain
+package.json → 🧰 toolbox + instruction manual
+database → 🗄️ storage room / archive

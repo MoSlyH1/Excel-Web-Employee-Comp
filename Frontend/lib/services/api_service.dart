@@ -4,8 +4,16 @@ import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import '../models/employee.dart';
 
+
+
+
 class ApiService {
-  static const String baseUrl = 'http://localhost:3000/api';
+  static const String baseUrl = '/api';
+
+
+
+
+
 
   // ─── EMPLOYEES ───────────────────────────────────────────
 
@@ -96,7 +104,22 @@ static Future<Employee> saveR3Data(int employeeId, Map<String, dynamic> data) as
   if (data is Map<String, dynamic>) return data;
   return {};
 }
+  static Future<Employee> saveE3lamData(
+  int employeeId,
+  Map<String, dynamic> data,
+) async {
+  final response = await http.put(
+    Uri.parse('$baseUrl/employees/$employeeId'),
+    headers: {'Content-Type': 'application/json'},
+    body: json.encode(data),
+  );
 
+  if (response.statusCode != 200) {
+    throw Exception('Failed to save E3lam data: ${response.body}');
+  }
+
+  return Employee.fromJson(json.decode(response.body));
+}
 static Future<void> saveCompanyInfo(Map<String, dynamic> data) async {
   final response = await http.put(
     Uri.parse('$baseUrl/company'),

@@ -2,13 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import './screens/homescreen.dart';
 
-// ══════════════════════════════════════════════════════════
-// REPLACE THESE WITH YOUR SUPABASE PROJECT CREDENTIALS
-// Found at: Supabase Dashboard > Settings > API
-// ══════════════════════════════════════════════════════════
-const String supabaseUrl = 'https://YOUR_PROJECT_ID.supabase.co';
-const String supabaseAnonKey = 'YOUR_ANON_KEY';
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 

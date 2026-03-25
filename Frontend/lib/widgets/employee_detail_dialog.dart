@@ -7,7 +7,7 @@ import '../services/api_service.dart';
 import 'r1_3_form_dialog.dart';
 import 'r3_form_dialog.dart';
 import 'r4_form_dialog.dart';
-
+import 'e3lam_form_dialog.dart';
 class EmployeeDetailDialog extends StatelessWidget {
   final Employee employee;
   final int docCount;
@@ -138,7 +138,16 @@ class EmployeeDetailDialog extends StatelessWidget {
       ),
     );
   }
-
+    void _openE3lamForm(BuildContext context) {
+    Navigator.pop(context);
+    showDialog(
+      context: context,
+      builder: (_) => E3lamFormDialog(
+        employee: employee,
+        onDataChanged: onDataChanged,
+      ),
+    );
+  }
   @override
   Widget build(BuildContext context) {
     final e = employee;
@@ -292,6 +301,50 @@ class EmployeeDetailDialog extends StatelessWidget {
                       ),
                     ),
 
+                      const SizedBox(height: 12),
+
+InkWell(
+  onTap: () => _openE3lamForm(context),
+  borderRadius: BorderRadius.circular(12),
+  child: Container(
+    padding: const EdgeInsets.all(16),
+    decoration: BoxDecoration(
+      color: const Color(0xFF8E244D).withOpacity(0.06),
+      borderRadius: BorderRadius.circular(12),
+      border: Border.all(
+        color: const Color(0xFF8E244D).withOpacity(0.2),
+      ),
+    ),
+    child: Row(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: const Color(0xFF8E244D).withOpacity(0.1),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: const Icon(
+            Icons.assignment_rounded,
+            color: Color(0xFF8E244D),
+            size: 20,
+          ),
+        ),
+        const SizedBox(width: 12),
+        const Expanded(
+          child: Text(
+            'إعلام عن ترك أجير عمله في المؤسسة',
+            style: TextStyle(fontWeight: FontWeight.w700),
+          ),
+        ),
+        const Icon(
+          Icons.arrow_forward_ios_rounded,
+          size: 16,
+          color: Color(0xFF8E244D),
+        ),
+      ],
+    ),
+  ),
+),
                     const SizedBox(height: 12),
 
                     // R3-1 COMPANY LETTER

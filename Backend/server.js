@@ -250,7 +250,7 @@ const cleaned = {};
 for (const [key, val] of Object.entries(b)) {
   if (key === "id" || key === "created_at" || key === "updated_at") continue;
 
-  if (dateColumns.includes(key) || key.includes("date")) {
+  if (dateColumns.includes(key)) {
     cleaned[key] = (val === "" || val === null || val === undefined) ? null : val;
   } else if (boolColumns.includes(key)) {
     cleaned[key] = val === true || val === "true";
@@ -364,5 +364,5 @@ for (const [key, val] of Object.entries(b)) {
   });
 
   app.listen(PORT, () => {
-    console.log(`\n🚀 Employee Hub API running at http://localhost:${PORT}\n`);
+    console.log(`\n🚀 Employee Hub API running at http://127.0.0.1:${PORT}\n`);
   });

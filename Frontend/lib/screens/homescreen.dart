@@ -46,52 +46,62 @@ class _HomeScreenState extends State<HomeScreen> {
     _ColumnConfig('documents', 'Docs', 80),
   ];
 
+  bool _isMobile(BuildContext context) =>
+      MediaQuery.of(context).size.width < 768;
+
+  bool _isTablet(BuildContext context) {
+    final w = MediaQuery.of(context).size.width;
+    return w >= 768 && w < 1100;
+  }
+
   @override
   void initState() {
     super.initState();
     _loadData();
     _loadCompanyDocCount();
   }
-  Future<void> _loadCompanyDocCount() async {
-  try {
-    final docs = await ApiService.getCompanyDocuments();
-    if (!mounted) return;
-    setState(() {
-      _companyDocCount = docs.length;
-    });
-  } catch (e) {
-    if (!mounted) return;
-    setState(() {
-      _companyDocCount = 0;
-    });
-  }
-}
-  Future<void> _loadData() async {
-  setState(() => _isLoading = true);
-  try {
-    final employees = await ApiService.getEmployees();
-    final docCounts = await ApiService.getDocumentCounts();
-    final companyDocs = await ApiService.getCompanyDocuments();
 
-    setState(() {
-      _employees = employees;
-      _filteredEmployees = employees;
-      _docCounts = docCounts;
-      _companyDocCount = companyDocs.length;
-      _isLoading = false;
-    });
-  } catch (e) {
-    setState(() => _isLoading = false);
-    if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error loading data: $e'),
-          backgroundColor: Colors.red.shade700,
-        ),
-      );
+  Future<void> _loadCompanyDocCount() async {
+    try {
+      final docs = await ApiService.getCompanyDocuments();
+      if (!mounted) return;
+      setState(() {
+        _companyDocCount = docs.length;
+      });
+    } catch (e) {
+      if (!mounted) return;
+      setState(() {
+        _companyDocCount = 0;
+      });
     }
   }
-}
+
+  Future<void> _loadData() async {
+    setState(() => _isLoading = true);
+    try {
+      final employees = await ApiService.getEmployees();
+      final docCounts = await ApiService.getDocumentCounts();
+      final companyDocs = await ApiService.getCompanyDocuments();
+
+      setState(() {
+        _employees = employees;
+        _filteredEmployees = employees;
+        _docCounts = docCounts;
+        _companyDocCount = companyDocs.length;
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() => _isLoading = false);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error loading data: $e'),
+            backgroundColor: Colors.red.shade700,
+          ),
+        );
+      }
+    }
+  }
 
   void _onSearch(String query) async {
     setState(() {
@@ -186,6 +196,33 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _openDocumentPanel(Employee employee) {
+    if (_isMobile(context)) {
+      showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        useSafeArea: true,
+        backgroundColor: Colors.transparent,
+        builder: (_) => DraggableScrollableSheet(
+          initialChildSize: 0.9,
+          minChildSize: 0.6,
+          maxChildSize: 0.95,
+          builder: (context, scrollController) => Container(
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+            ),
+            child: DocumentPanel(
+              employeeId: employee.id,
+              employeeName: employee.fullName,
+              onClose: () => Navigator.pop(context),
+              onDocumentsChanged: _loadData,
+            ),
+          ),
+        ),
+      );
+      return;
+    }
+
     setState(() {
       _selectedEmployeeId = employee.id;
     });
@@ -200,80 +237,123 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
-Widget build(BuildContext context) {
-  final screenWidth = MediaQuery.of(context).size.width;
-  final showEmployeeDocPanel =
-      _selectedEmployeeId != null && screenWidth > 900;
+  Widget build(BuildContext context) {
+    final isMobile = _isMobile(context);
+    final isTablet = _isTablet(context);
+    final horizontalPadding = isMobile ? 12.0 : 16.0;
+    final showEmployeeDocPanel =
+        _selectedEmployeeId != null && !isMobile && !isTablet;
 
-  return Scaffold(
-    backgroundColor: const Color(0xFFF0F2F8),
-    body: Column(
-      children: [
-        _buildTopBar(),
-        StatsBar(employees: _employees, docCounts: _docCounts),
-
-        Padding(
-          padding: const EdgeInsets.fromLTRB(24, 16, 24, 8),
-          child: SearchBarWidget(
-            onSearch: _onSearch,
-            isSearching: _isSearching,
-            searchResults: _searchResults,
-            onResultTap: (empId) {
-              final emp = _employees.firstWhere((e) => e.id == empId);
-              _showEmployeeDetail(emp);
-            },
-          ),
-        ),
-
-        if (_showCompanyDocs)
-          Padding(
-            padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
-            child: SizedBox(
-              height: 320,
-              child: CompanyDocumentsPanel(
-                onClose: () {
-                  setState(() => _showCompanyDocs = false);
-                },
-                onDocumentsChanged: () async {
-                  await _loadCompanyDocCount();
-                  await _loadData();
+    return Scaffold(
+      backgroundColor: const Color(0xFFF0F2F8),
+      body: SafeArea(
+        child: Column(
+          children: [
+            _buildTopBar(context),
+            Padding(
+              padding: EdgeInsets.fromLTRB(
+                horizontalPadding,
+                12,
+                horizontalPadding,
+                8,
+              ),
+              child: StatsBar(employees: _employees, docCounts: _docCounts),
+            ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(
+                horizontalPadding,
+                8,
+                horizontalPadding,
+                8,
+              ),
+              child: SearchBarWidget(
+                onSearch: _onSearch,
+                isSearching: _isSearching,
+                searchResults: _searchResults,
+                onResultTap: (empId) {
+                  final emp = _employees.firstWhere((e) => e.id == empId);
+                  _showEmployeeDetail(emp);
                 },
               ),
             ),
-          ),
-
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
-            child: Row(
-              children: [
-                Expanded(child: _buildDataTable()),
-                if (showEmployeeDocPanel) ...[
-                  const SizedBox(width: 16),
-                  SizedBox(
-                    width: 360,
-                    child: DocumentPanel(
-                      employeeId: _selectedEmployeeId!,
-                      employeeName: _employees
-                          .firstWhere((e) => e.id == _selectedEmployeeId)
-                          .fullName,
-                      onClose: _closeDocumentPanel,
-                      onDocumentsChanged: _loadData,
-                    ),
+            if (_showCompanyDocs)
+              Padding(
+                padding: EdgeInsets.fromLTRB(
+                  horizontalPadding,
+                  8,
+                  horizontalPadding,
+                  8,
+                ),
+                child: SizedBox(
+                  height: isMobile ? 420 : 320,
+                  child: CompanyDocumentsPanel(
+                    onClose: () {
+                      setState(() => _showCompanyDocs = false);
+                    },
+                    onDocumentsChanged: () async {
+                      await _loadCompanyDocCount();
+                      await _loadData();
+                    },
                   ),
-                ],
-              ],
-            ),
-          ),
-        ),
-      ],
+                ),
+              ),
+            Expanded(
+  child: Padding(
+    padding: EdgeInsets.fromLTRB(
+      horizontalPadding,
+      8,
+      horizontalPadding,
+      horizontalPadding,
     ),
-  );
-}
-  
-  Widget _buildTopBar() {
+    child: SizedBox.expand(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Expanded(child: _buildContent(context)),
+          if (showEmployeeDocPanel && _selectedEmployeeId != null) ...[
+            const SizedBox(width: 16),
+            SizedBox(
+              width: 360,
+              child: DocumentPanel(
+                employeeId: _selectedEmployeeId!,
+                employeeName: _employees
+                    .firstWhere((e) => e.id == _selectedEmployeeId!)
+                    .fullName,
+                onClose: _closeDocumentPanel,
+                onDocumentsChanged: _loadData,
+              ),
+            ),
+          ],
+        ],
+      ),
+    ),
+  ),
+),
+
+
+
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildContent(BuildContext context) {
+    if (_isMobile(context)) {
+      return _buildEmployeeList();
+    }
+    return _buildDataTable();
+  }
+
+  Widget _buildTopBar(BuildContext context) {
+    final isMobile = _isMobile(context);
+
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(
+        horizontal: isMobile ? 12 : 24,
+        vertical: isMobile ? 12 : 16,
+      ),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
           colors: [Color(0xFF0D47A1), Color(0xFF1565C0), Color(0xFF1976D2)],
@@ -286,65 +366,144 @@ Widget build(BuildContext context) {
           ),
         ],
       ),
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.15),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: const Icon(
-              Icons.people_alt_rounded,
-              color: Colors.white,
-              size: 28,
-            ),
-          ),
-          const SizedBox(width: 16),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Employee Hub',
-                style: GoogleFonts.spaceGrotesk(
-                  fontSize: 24,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.white,
+      child: isMobile
+          ? Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.15),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: const Icon(
+                        Icons.people_alt_rounded,
+                        color: Colors.white,
+                        size: 24,
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Employee Hub',
+                            style: GoogleFonts.spaceGrotesk(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.white,
+                            ),
+                          ),
+                          Text(
+                            '${_employees.length} employees',
+                            style: GoogleFonts.dmSans(
+                              fontSize: 13,
+                              color: Colors.white.withOpacity(0.8),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-              Text(
-                '${_employees.length} employees',
-                style: GoogleFonts.dmSans(
-                  fontSize: 14,
-                  color: Colors.white.withOpacity(0.7),
+                const SizedBox(height: 12),
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: [
+                    _buildTopButton(
+                      Icons.refresh_rounded,
+                      'Refresh',
+                      _loadData,
+                      compact: true,
+                    ),
+                    _buildTopButton(
+                      _showCompanyDocs
+                          ? Icons.folder_open_rounded
+                          : Icons.folder_copy_rounded,
+                      _showCompanyDocs
+                          ? 'Hide PDFs ($_companyDocCount)'
+                          : 'Company PDFs ($_companyDocCount)',
+                      _toggleCompanyDocs,
+                      compact: true,
+                    ),
+                    _buildTopButton(
+                      Icons.person_add_rounded,
+                      'Add Employee',
+                      _showAddEmployeeDialog,
+                      compact: true,
+                    ),
+                  ],
                 ),
-              ),
-            ],
-          ),
-          const Spacer(),
-          _buildTopButton(Icons.refresh_rounded, 'Refresh', _loadData),
-          const SizedBox(width: 8),
-          _buildTopButton(
-  _showCompanyDocs
-      ? Icons.folder_open_rounded
-      : Icons.folder_copy_rounded,
-  _showCompanyDocs
-      ? 'Hide Company PDFs ($_companyDocCount)'
-      : 'Company PDFs ($_companyDocCount)',
-  _toggleCompanyDocs,
-),
-          const SizedBox(width: 8),
-          _buildTopButton(
-            Icons.person_add_rounded,
-            'Add Employee',
-            _showAddEmployeeDialog,
-          ),
-        ],
-      ),
+              ],
+            )
+          : Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.15),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: const Icon(
+                    Icons.people_alt_rounded,
+                    color: Colors.white,
+                    size: 28,
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Employee Hub',
+                      style: GoogleFonts.spaceGrotesk(
+                        fontSize: 24,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white,
+                      ),
+                    ),
+                    Text(
+                      '${_employees.length} employees',
+                      style: GoogleFonts.dmSans(
+                        fontSize: 14,
+                        color: Colors.white.withOpacity(0.7),
+                      ),
+                    ),
+                  ],
+                ),
+                const Spacer(),
+                _buildTopButton(Icons.refresh_rounded, 'Refresh', _loadData),
+                const SizedBox(width: 8),
+                _buildTopButton(
+                  _showCompanyDocs
+                      ? Icons.folder_open_rounded
+                      : Icons.folder_copy_rounded,
+                  _showCompanyDocs
+                      ? 'Hide Company PDFs ($_companyDocCount)'
+                      : 'Company PDFs ($_companyDocCount)',
+                  _toggleCompanyDocs,
+                ),
+                const SizedBox(width: 8),
+                _buildTopButton(
+                  Icons.person_add_rounded,
+                  'Add Employee',
+                  _showAddEmployeeDialog,
+                ),
+              ],
+            ),
     );
   }
 
-  Widget _buildTopButton(IconData icon, String label, VoidCallback onTap) {
+  Widget _buildTopButton(
+    IconData icon,
+    String label,
+    VoidCallback onTap, {
+    bool compact = false,
+  }) {
     return Material(
       color: Colors.white.withOpacity(0.12),
       borderRadius: BorderRadius.circular(10),
@@ -352,16 +511,21 @@ Widget build(BuildContext context) {
         onTap: onTap,
         borderRadius: BorderRadius.circular(10),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          padding: EdgeInsets.symmetric(
+            horizontal: compact ? 12 : 16,
+            vertical: compact ? 8 : 10,
+          ),
           child: Row(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(icon, color: Colors.white, size: 18),
+              Icon(icon, color: Colors.white, size: compact ? 16 : 18),
               const SizedBox(width: 8),
               Text(
                 label,
-                style: const TextStyle(
+                style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.w600,
+                  fontSize: compact ? 13 : 14,
                 ),
               ),
             ],
@@ -371,7 +535,7 @@ Widget build(BuildContext context) {
     );
   }
 
-  Widget _buildDataTable() {
+  Widget _buildEmployeeList() {
     if (_isLoading) {
       return const Center(child: CircularProgressIndicator());
     }
@@ -398,66 +562,243 @@ Widget build(BuildContext context) {
       );
     }
 
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.grey.shade200),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.04),
-            blurRadius: 12,
-            offset: const Offset(0, 2),
+    return ListView.separated(
+      itemCount: _filteredEmployees.length,
+      separatorBuilder: (_, __) => const SizedBox(height: 12),
+      itemBuilder: (context, index) {
+        final emp = _filteredEmployees[index];
+        final docCount = _docCounts[emp.id] ?? 0;
+
+        return Material(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          child: InkWell(
+            borderRadius: BorderRadius.circular(16),
+            onTap: () => _showEmployeeDetail(emp),
+            child: Container(
+              padding: const EdgeInsets.all(14),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: Colors.grey.shade200),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.04),
+                    blurRadius: 10,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 20,
+                        backgroundColor: _avatarColor(emp.fullName),
+                        child: Text(
+                          emp.fullName.isNotEmpty
+                              ? emp.fullName[0].toUpperCase()
+                              : '?',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              emp.fullName,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: GoogleFonts.dmSans(
+                                fontWeight: FontWeight.w700,
+                                fontSize: 15,
+                              ),
+                            ),
+                            const SizedBox(height: 2),
+                            Text(
+                              emp.employeeId,
+                              style: GoogleFonts.jetBrainsMono(
+                                fontSize: 12,
+                                color: const Color(0xFF0D47A1),
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      _deptChip(emp.department ?? '—'),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  _mobileInfoRow(Icons.work_outline, emp.jobPosition ?? '—'),
+                  _mobileInfoRow(Icons.email_outlined, emp.email ?? '—'),
+                  _mobileInfoRow(Icons.phone_outlined, emp.phone ?? '—'),
+                  _mobileInfoRow(
+                    Icons.calendar_month_outlined,
+                    'Start: ${_formatDate(emp.startDate)}',
+                  ),
+                  const SizedBox(height: 12),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: OutlinedButton.icon(
+                          onPressed: () => _showEmployeeDetail(emp),
+                          icon: const Icon(Icons.visibility_outlined, size: 18),
+                          label: const Text('View'),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: FilledButton.icon(
+                          onPressed: () => _openDocumentPanel(emp),
+                          icon: Icon(
+                            docCount > 0
+                                ? Icons.folder_rounded
+                                : Icons.upload_file_rounded,
+                            size: 18,
+                          ),
+                          label: Text('Docs ($docCount)'),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _mobileInfoRow(IconData icon, String value) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Row(
+        children: [
+          Icon(icon, size: 16, color: Colors.grey.shade600),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              value,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                color: Colors.grey.shade800,
+                fontSize: 13,
+              ),
+            ),
           ),
         ],
       ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(16),
-        child: SingleChildScrollView(
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: DataTable(
-              headingRowColor:
-                  WidgetStateProperty.all(const Color(0xFFF5F7FA)),
-              headingRowHeight: 52,
-              dataRowMinHeight: 52,
-              dataRowMaxHeight: 60,
-              columnSpacing: 20,
-              horizontalMargin: 20,
-              showCheckboxColumn: false,
-              sortColumnIndex:
-                  _columns.indexWhere((c) => c.key == _sortColumn),
-              sortAscending: _sortAscending,
-              columns: _columns.map((col) {
-                if (col.key == 'documents') {
-                  return DataColumn(
-                    label: Text(
-                      col.label,
-                      style: GoogleFonts.dmSans(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 13,
-                      ),
-                    ),
-                  );
-                }
-                return DataColumn(
-                  label: Text(
-                    col.label,
-                    style: GoogleFonts.dmSans(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 13,
-                    ),
-                  ),
-                  onSort: (_, __) => _sortBy(col.key),
-                );
-              }).toList(),
-              rows: _filteredEmployees.map((emp) => _buildDataRow(emp)).toList(),
-            ),
+    );
+  }
+
+  Widget _buildDataTable() {
+  if (_isLoading) {
+    return const Center(child: CircularProgressIndicator());
+  }
+
+  if (_filteredEmployees.isEmpty) {
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            Icons.search_off_rounded,
+            size: 64,
+            color: Colors.grey.shade400,
           ),
-        ),
+          const SizedBox(height: 16),
+          Text(
+            _searchQuery.isNotEmpty
+                ? 'No results for "$_searchQuery"'
+                : 'No employees found',
+            style: TextStyle(fontSize: 16, color: Colors.grey.shade600),
+          ),
+        ],
       ),
     );
   }
+
+  return LayoutBuilder(
+    builder: (context, constraints) {
+      return Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: Colors.grey.shade200),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.04),
+              blurRadius: 12,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(16),
+          child: SingleChildScrollView(
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minWidth: constraints.maxWidth,
+                ),
+                child: DataTable(
+                  headingRowColor:
+                      WidgetStateProperty.all(const Color(0xFFF5F7FA)),
+                  headingRowHeight: 52,
+                  dataRowMinHeight: 52,
+                  dataRowMaxHeight: 60,
+                  columnSpacing: 20,
+                  horizontalMargin: 20,
+                  showCheckboxColumn: false,
+                  sortColumnIndex:
+                      _columns.indexWhere((c) => c.key == _sortColumn),
+                  sortAscending: _sortAscending,
+                  columns: _columns.map((col) {
+                    if (col.key == 'documents') {
+                      return DataColumn(
+                        label: Text(
+                          col.label,
+                          style: GoogleFonts.dmSans(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 13,
+                          ),
+                        ),
+                      );
+                    }
+                    return DataColumn(
+                      label: Text(
+                        col.label,
+                        style: GoogleFonts.dmSans(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 13,
+                        ),
+                      ),
+                      onSort: (_, __) => _sortBy(col.key),
+                    );
+                  }).toList(),
+                  rows: _filteredEmployees
+                      .map((emp) => _buildDataRow(emp))
+                      .toList(),
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+    },
+  );
+}
 
   DataRow _buildDataRow(Employee emp) {
     final isSelected = _selectedEmployeeId == emp.id;
@@ -507,7 +848,8 @@ Widget build(BuildContext context) {
                 ),
               ),
               const SizedBox(width: 10),
-              Flexible(
+              SizedBox(
+                width: 140,
                 child: Text(
                   emp.fullName,
                   style: const TextStyle(fontWeight: FontWeight.w600),
@@ -518,13 +860,19 @@ Widget build(BuildContext context) {
           ),
         ),
         DataCell(_deptChip(emp.department ?? '—')),
-        DataCell(Text(emp.jobPosition ?? '—', overflow: TextOverflow.ellipsis)),
+        DataCell(SizedBox(
+          width: 150,
+          child: Text(emp.jobPosition ?? '—', overflow: TextOverflow.ellipsis),
+        )),
         DataCell(Text(emp.nationality ?? '—')),
         DataCell(
-          Text(
-            emp.email ?? '—',
-            style: TextStyle(color: Colors.blue.shade700, fontSize: 13),
-            overflow: TextOverflow.ellipsis,
+          SizedBox(
+            width: 180,
+            child: Text(
+              emp.email ?? '—',
+              style: TextStyle(color: Colors.blue.shade700, fontSize: 13),
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
         ),
         DataCell(Text(emp.phone ?? '—', style: const TextStyle(fontSize: 13))),
@@ -634,6 +982,30 @@ Widget build(BuildContext context) {
     );
   }
 
+  Widget _responsiveFields(
+    BuildContext context,
+    Widget first,
+    Widget second,
+  ) {
+    if (_isMobile(context)) {
+      return Column(
+        children: [
+          first,
+          const SizedBox(height: 12),
+          second,
+        ],
+      );
+    }
+
+    return Row(
+      children: [
+        Expanded(child: first),
+        const SizedBox(width: 12),
+        Expanded(child: second),
+      ],
+    );
+  }
+
   void _showAddEmployeeDialog() {
     bool isArabic = false;
 
@@ -719,10 +1091,15 @@ Widget build(BuildContext context) {
         builder: (ctx, setDialogState) {
           final l = isArabic ? labels['ar']! : labels['en']!;
           final dir = isArabic ? ui.TextDirection.rtl : ui.TextDirection.ltr;
+          final dialogWidth = _isMobile(context) ? double.infinity : 600.0;
 
           return Directionality(
             textDirection: dir,
             child: AlertDialog(
+              insetPadding: EdgeInsets.symmetric(
+                horizontal: _isMobile(context) ? 12 : 40,
+                vertical: 24,
+              ),
               title: Row(
                 children: [
                   Expanded(
@@ -730,6 +1107,7 @@ Widget build(BuildContext context) {
                       l['title']!,
                       style: GoogleFonts.spaceGrotesk(
                         fontWeight: FontWeight.w700,
+                        fontSize: _isMobile(context) ? 18 : 22,
                       ),
                     ),
                   ),
@@ -764,7 +1142,7 @@ Widget build(BuildContext context) {
                 ],
               ),
               content: SizedBox(
-                width: 600,
+                width: dialogWidth,
                 child: SingleChildScrollView(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -778,71 +1156,48 @@ Widget build(BuildContext context) {
                         ),
                       ),
                       const SizedBox(height: 12),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: TextField(
-                              controller: ctrls['id'],
-                              textDirection: dir,
-                              decoration:
-                                  InputDecoration(labelText: l['id']),
-                            ),
-                          ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: TextField(
-                              controller: ctrls['name'],
-                              textDirection: dir,
-                              decoration:
-                                  InputDecoration(labelText: l['name']),
-                            ),
-                          ),
-                        ],
+                      _responsiveFields(
+                        context,
+                        TextField(
+                          controller: ctrls['id'],
+                          textDirection: dir,
+                          decoration: InputDecoration(labelText: l['id']),
+                        ),
+                        TextField(
+                          controller: ctrls['name'],
+                          textDirection: dir,
+                          decoration: InputDecoration(labelText: l['name']),
+                        ),
                       ),
                       const SizedBox(height: 12),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: TextField(
-                              controller: ctrls['nationality'],
-                              textDirection: dir,
-                              decoration: InputDecoration(
-                                labelText: l['nationality'],
-                              ),
-                            ),
+                      _responsiveFields(
+                        context,
+                        TextField(
+                          controller: ctrls['nationality'],
+                          textDirection: dir,
+                          decoration: InputDecoration(
+                            labelText: l['nationality'],
                           ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: TextField(
-                              controller: ctrls['email'],
-                              textDirection: ui.TextDirection.ltr,
-                              decoration:
-                                  InputDecoration(labelText: l['email']),
-                            ),
-                          ),
-                        ],
+                        ),
+                        TextField(
+                          controller: ctrls['email'],
+                          textDirection: ui.TextDirection.ltr,
+                          decoration: InputDecoration(labelText: l['email']),
+                        ),
                       ),
                       const SizedBox(height: 12),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: TextField(
-                              controller: ctrls['phone'],
-                              textDirection: ui.TextDirection.ltr,
-                              decoration:
-                                  InputDecoration(labelText: l['phone']),
-                            ),
-                          ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: TextField(
-                              controller: ctrls['bank'],
-                              textDirection: ui.TextDirection.ltr,
-                              decoration:
-                                  InputDecoration(labelText: l['bank']),
-                            ),
-                          ),
-                        ],
+                      _responsiveFields(
+                        context,
+                        TextField(
+                          controller: ctrls['phone'],
+                          textDirection: ui.TextDirection.ltr,
+                          decoration: InputDecoration(labelText: l['phone']),
+                        ),
+                        TextField(
+                          controller: ctrls['bank'],
+                          textDirection: ui.TextDirection.ltr,
+                          decoration: InputDecoration(labelText: l['bank']),
+                        ),
                       ),
                       const SizedBox(height: 24),
                       Text(
@@ -854,75 +1209,49 @@ Widget build(BuildContext context) {
                         ),
                       ),
                       const SizedBox(height: 12),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: TextField(
-                              controller: ctrls['dept'],
-                              textDirection: dir,
-                              decoration:
-                                  InputDecoration(labelText: l['dept']),
-                            ),
-                          ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: TextField(
-                              controller: ctrls['pos'],
-                              textDirection: dir,
-                              decoration:
-                                  InputDecoration(labelText: l['pos']),
-                            ),
-                          ),
-                        ],
+                      _responsiveFields(
+                        context,
+                        TextField(
+                          controller: ctrls['dept'],
+                          textDirection: dir,
+                          decoration: InputDecoration(labelText: l['dept']),
+                        ),
+                        TextField(
+                          controller: ctrls['pos'],
+                          textDirection: dir,
+                          decoration: InputDecoration(labelText: l['pos']),
+                        ),
                       ),
                       const SizedBox(height: 12),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: TextField(
-                              controller: ctrls['contract'],
-                              textDirection: dir,
-                              decoration: InputDecoration(
-                                labelText: l['contract'],
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: TextField(
-                              controller: ctrls['wageType'],
-                              textDirection: dir,
-                              decoration: InputDecoration(
-                                labelText: l['wageType'],
-                              ),
-                            ),
-                          ),
-                        ],
+                      _responsiveFields(
+                        context,
+                        TextField(
+                          controller: ctrls['contract'],
+                          textDirection: dir,
+                          decoration: InputDecoration(labelText: l['contract']),
+                        ),
+                        TextField(
+                          controller: ctrls['wageType'],
+                          textDirection: dir,
+                          decoration: InputDecoration(labelText: l['wageType']),
+                        ),
                       ),
                       const SizedBox(height: 12),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: TextField(
-                              controller: ctrls['salary'],
-                              textDirection: ui.TextDirection.ltr,
-                              decoration:
-                                  InputDecoration(labelText: l['salary']),
-                              keyboardType: TextInputType.number,
-                            ),
-                          ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: TextField(
-                              controller: ctrls['allowances'],
-                              textDirection: ui.TextDirection.ltr,
-                              decoration: InputDecoration(
-                                labelText: l['allowances'],
-                              ),
-                              keyboardType: TextInputType.number,
-                            ),
-                          ),
-                        ],
+                      _responsiveFields(
+                        context,
+                        TextField(
+                          controller: ctrls['salary'],
+                          textDirection: ui.TextDirection.ltr,
+                          decoration: InputDecoration(labelText: l['salary']),
+                          keyboardType: TextInputType.number,
+                        ),
+                        TextField(
+                          controller: ctrls['allowances'],
+                          textDirection: ui.TextDirection.ltr,
+                          decoration:
+                              InputDecoration(labelText: l['allowances']),
+                          keyboardType: TextInputType.number,
+                        ),
                       ),
                       const SizedBox(height: 24),
                       Text(
@@ -934,47 +1263,37 @@ Widget build(BuildContext context) {
                         ),
                       ),
                       const SizedBox(height: 12),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: TextField(
-                              controller: ctrls['joining'],
-                              textDirection: ui.TextDirection.ltr,
-                              decoration: InputDecoration(
-                                labelText: l['joining'],
-                                hintText: l['dateHint'],
-                              ),
-                            ),
+                      _responsiveFields(
+                        context,
+                        TextField(
+                          controller: ctrls['joining'],
+                          textDirection: ui.TextDirection.ltr,
+                          decoration: InputDecoration(
+                            labelText: l['joining'],
+                            hintText: l['dateHint'],
                           ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: TextField(
-                              controller: ctrls['start'],
-                              textDirection: ui.TextDirection.ltr,
-                              decoration: InputDecoration(
-                                labelText: l['start'],
-                                hintText: l['dateHint'],
-                              ),
-                            ),
+                        ),
+                        TextField(
+                          controller: ctrls['start'],
+                          textDirection: ui.TextDirection.ltr,
+                          decoration: InputDecoration(
+                            labelText: l['start'],
+                            hintText: l['dateHint'],
                           ),
-                        ],
+                        ),
                       ),
                       const SizedBox(height: 12),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: TextField(
-                              controller: ctrls['end'],
-                              textDirection: ui.TextDirection.ltr,
-                              decoration: InputDecoration(
-                                labelText: l['end'],
-                                hintText: l['dateHint'],
-                              ),
-                            ),
+                      _responsiveFields(
+                        context,
+                        TextField(
+                          controller: ctrls['end'],
+                          textDirection: ui.TextDirection.ltr,
+                          decoration: InputDecoration(
+                            labelText: l['end'],
+                            hintText: l['dateHint'],
                           ),
-                          const SizedBox(width: 12),
-                          const Expanded(child: SizedBox()),
-                        ],
+                        ),
+                        const SizedBox.shrink(),
                       ),
                     ],
                   ),

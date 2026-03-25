@@ -1,5 +1,5 @@
 class Employee {
-  final int? id;
+  final int id;
   final String employeeId;
   final String fullName;
   final String? nationality;
@@ -82,9 +82,32 @@ final String? employerTitle;
 final String? r3FinancialNumber;
 final DateTime? r3RegistrationDate;
 final String? r3RejectionReason;
-
+  
+final String? institutionResponsible;
+final String? institutionNssfNumber;
+final String? institutionPlace;
+final String? institutionNumber;
+final String? institutionPhone;
+final String? institutionFullAddress;
+final String? employeeFundNumber;
+final String? employeeName;
+final String? employeeSurname;
+final String? fatherNameE3lam;
+final String? motherNameE3lam;
+final String? birthDatePlace;
+final String? registerNumberE3lam;
+final String? leftWorkSince;
+final String? leaveReason;
+final String? currentJob;
+final String? salaryAtLeaveDate;
+final String? beirutDate;
+final String? employeeSignedName;
+final String? centerNumber;
+final String? registrationDepartmentName;
+final String? registrationDepartmentDate;
+final String? registrationProcessedDate;
   Employee({
-    this.id,
+    required this.id,
     required this.employeeId,
     required this.fullName,
     this.nationality,
@@ -157,11 +180,37 @@ this.employerTitle,
 this.r3FinancialNumber,
 this.r3RegistrationDate,
 this.r3RejectionReason,
+
+this.institutionResponsible,
+this.institutionNssfNumber,
+this.institutionPlace,
+this.institutionNumber,
+this.institutionPhone,
+this.institutionFullAddress,
+this.employeeFundNumber,
+this.employeeName,
+this.employeeSurname,
+this.fatherNameE3lam,
+this.motherNameE3lam,
+this.birthDatePlace,
+this.registerNumberE3lam,
+this.leftWorkSince,
+this.leaveReason,
+this.currentJob,
+this.salaryAtLeaveDate,
+this.beirutDate,
+this.employeeSignedName,
+this.centerNumber,
+this.registrationDepartmentName,
+this.registrationDepartmentDate,
+this.registrationProcessedDate,
   });
 
   factory Employee.fromJson(Map<String, dynamic> j) {
     return Employee(
-      id: j['id'] as int?,
+      id: j['id'] is String
+    ? int.tryParse(j['id']) ?? 0
+    : j['id'] as int? ?? 0,
       employeeId: j['employee_id'] as String? ?? '',
       fullName: j['full_name'] as String? ?? '',
       nationality: j['nationality'] as String?,
@@ -238,6 +287,30 @@ employerTitle: j['employer_title'] as String?,
 r3FinancialNumber: j['r3_financial_number'] as String?,
 r3RegistrationDate: _dt(j['r3_registration_date']),
 r3RejectionReason: j['r3_rejection_reason'] as String?,
+
+institutionResponsible: j['institution_responsible'],
+institutionNssfNumber: j['institution_nssf_number'],
+institutionPlace: j['institution_place'],
+institutionNumber: j['institution_number'],
+institutionPhone: j['institution_phone'],
+institutionFullAddress: j['institution_full_address'],
+employeeFundNumber: j['employee_fund_number'],
+employeeName: j['employee_name'],
+employeeSurname: j['employee_surname'],
+fatherNameE3lam: j['father_name'],
+motherNameE3lam: j['mother_name'],
+birthDatePlace: j['birth_date_place'],
+registerNumberE3lam: j['register_number'],
+leftWorkSince: j['left_work_since'],
+leaveReason: j['leave_reason'],
+currentJob: j['current_job'],
+salaryAtLeaveDate: j['salary_at_leave_date'],
+beirutDate: j['beirut_date'],
+employeeSignedName: j['employee_signed_name'],
+centerNumber: j['center_number'],
+registrationDepartmentName: j['registration_department_name'],
+registrationDepartmentDate: j['registration_department_date'],
+registrationProcessedDate: j['registration_processed_date'],
     );
   }
 
