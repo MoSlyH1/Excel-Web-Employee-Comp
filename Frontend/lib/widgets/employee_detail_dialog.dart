@@ -8,7 +8,14 @@ import 'r1_3_form_dialog.dart';
 import 'r3_form_dialog.dart';
 import 'r4_form_dialog.dart';
 import 'e3lam_form_dialog.dart';
-class EmployeeDetailDialog extends StatelessWidget {
+import 'r7_form_dialog.dart';
+
+// If generateE3lamPdfFromEmployee is NOT inside e3lam_form_dialog.dart,
+// import the correct file here instead.
+// Example:
+// import '../services/e3lam_pdf_service.dart';
+
+class EmployeeDetailDialog extends StatefulWidget {
   final Employee employee;
   final int docCount;
   final VoidCallback onOpenDocs;
@@ -22,8 +29,73 @@ class EmployeeDetailDialog extends StatelessWidget {
     required this.onDataChanged,
   });
 
+  @override
+  State<EmployeeDetailDialog> createState() => _EmployeeDetailDialogState();
+}
+
+class _EmployeeDetailDialogState extends State<EmployeeDetailDialog> {
+  bool _autoGenerating = false;
+
   String _fmt(DateTime? d) =>
       d != null ? DateFormat('dd MMM yyyy').format(d) : '—';
+
+  Employee get e => widget.employee;
+
+  // Keep this simple unless your Employee model really has leftDate.
+  bool get _hasEndDate => e.endDate != null;
+
+  Future<void> _autoGenerateE3lam() async {
+    if (e.id == null) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Employee ID is missing'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    setState(() => _autoGenerating = true);
+
+    try {
+      await ApiService.autoGenerateE3lam(e.id!);
+      final fresh = await ApiService.getEmployee(e.id!);
+      final pdfBytes = await generateE3lamPdfFromEmployee(fresh);
+
+      final fileName =
+          'e3lam_auto_${e.id}_${DateTime.now().millisecondsSinceEpoch}.pdf';
+
+      await ApiService.uploadDocuments(
+        employeeId: e.id!,
+        fileNames: [fileName],
+        fileBytes: [pdfBytes],
+        mimeTypes: ['application/pdf'],
+      );
+
+      widget.onDataChanged();
+
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('✓ E3lam PDF generated: $fileName'),
+          backgroundColor: const Color(0xFF00897B),
+        ),
+      );
+    } catch (err) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('E3lam auto-generation failed: $err'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    } finally {
+      if (mounted) {
+        setState(() => _autoGenerating = false);
+      }
+    }
+  }
 
   Future<void> _deleteEmployee(BuildContext context) async {
     final firstConfirm = await showDialog<bool>(
@@ -31,7 +103,7 @@ class EmployeeDetailDialog extends StatelessWidget {
       builder: (ctx) => AlertDialog(
         title: const Text('Delete Employee'),
         content: Text(
-          'Are you sure you want to delete ${employee.fullName}?\n\n'
+          'Are you sure you want to delete ${e.fullName}?\n\n'
           'This will also delete all their uploaded documents.',
         ),
         actions: [
@@ -62,7 +134,7 @@ class EmployeeDetailDialog extends StatelessWidget {
         content: Text(
           'This action CANNOT be undone.\n\n'
           'You are about to permanently delete:\n'
-          '• ${employee.fullName} (${employee.employeeId})\n'
+          '• ${e.fullName} (${e.employeeId})\n'
           '• All associated documents',
         ),
         actions: [
@@ -82,23 +154,23 @@ class EmployeeDetailDialog extends StatelessWidget {
     if (secondConfirm != true) return;
 
     try {
-      await ApiService.deleteEmployee(employee.id!);
+      await ApiService.deleteEmployee(e.id!);
 
       if (context.mounted) {
         Navigator.pop(context);
-        onDataChanged();
+        widget.onDataChanged();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('${employee.fullName} deleted'),
+            content: Text('${e.fullName} deleted'),
             backgroundColor: Colors.red.shade700,
           ),
         );
       }
-    } catch (e) {
+    } catch (err) {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Delete failed: $e'),
+            content: Text('Delete failed: $err'),
             backgroundColor: Colors.red,
           ),
         );
@@ -111,7 +183,7 @@ class EmployeeDetailDialog extends StatelessWidget {
     showDialog(
       context: context,
       builder: (_) => R1_3FormDialog(
-        onDataChanged: onDataChanged,
+        onDataChanged: widget.onDataChanged,
         employeeCount: 1,
       ),
     );
@@ -122,8 +194,8 @@ class EmployeeDetailDialog extends StatelessWidget {
     showDialog(
       context: context,
       builder: (_) => R3FormDialog(
-        employee: employee,
-        onDataChanged: onDataChanged,
+        employee: e,
+        onDataChanged: widget.onDataChanged,
       ),
     );
   }
@@ -133,25 +205,36 @@ class EmployeeDetailDialog extends StatelessWidget {
     showDialog(
       context: context,
       builder: (_) => R4FormDialog(
-        employee: employee,
-        onDataChanged: onDataChanged,
+        employee: e,
+        onDataChanged: widget.onDataChanged,
       ),
     );
   }
-    void _openE3lamForm(BuildContext context) {
+
+  void _openE3lamForm(BuildContext context) {
     Navigator.pop(context);
     showDialog(
       context: context,
       builder: (_) => E3lamFormDialog(
-        employee: employee,
-        onDataChanged: onDataChanged,
+        employee: e,
+        onDataChanged: widget.onDataChanged,
       ),
     );
   }
+
+  void _openR7Form(BuildContext context) {
+    Navigator.pop(context);
+    showDialog(
+      context: context,
+      builder: (_) => R7FormDialog(
+        employee: e,
+        onDataChanged: widget.onDataChanged,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final e = employee;
-
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       child: ConstrainedBox(
@@ -171,7 +254,7 @@ class EmployeeDetailDialog extends StatelessWidget {
                 children: [
                   CircleAvatar(
                     radius: 28,
-                    backgroundColor: Colors.white.withOpacity(0.2),
+                    backgroundColor: Colors.white24,
                     child: Text(
                       e.fullName.isNotEmpty ? e.fullName[0].toUpperCase() : '?',
                       style: const TextStyle(
@@ -218,44 +301,116 @@ class EmployeeDetailDialog extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _section(
-                      'Personal Info',
-                      [
-                        _f('Employee ID', e.employeeId),
-                        _f('Nationality', e.nationality),
-                        _f('Email', e.email),
-                        _f('Phone', e.phone),
-                        _f('Bank Account', e.bankAccountNb),
-                      ],
-                    ),
+                    _section('Personal Info', [
+                      _f('Employee ID', e.employeeId),
+                      _f('Nationality', e.nationality),
+                      _f('Email', e.email),
+                      _f('Phone', e.phone),
+                      _f('Bank Account', e.bankAccountNb),
+                    ]),
                     const SizedBox(height: 20),
-                    _section(
-                      'Employment',
-                      [
-                        _f('Contract Type', e.contractType),
-                        _f('Department', e.department),
-                        _f('Position', e.jobPosition),
-                        _f('Wage Type', e.wageType),
-                        _f('Basic Salary', e.basicSalary?.toStringAsFixed(0)),
-                        _f(
-                          'Other Allowances',
-                          e.otherAllowances?.toStringAsFixed(0),
-                        ),
-                      ],
-                    ),
+                    _section('Employment', [
+                      _f('Contract Type', e.contractType),
+                      _f('Department', e.department),
+                      _f('Position', e.jobPosition),
+                      _f('Wage Type', e.wageType),
+                      _f('Basic Salary', e.basicSalary?.toStringAsFixed(0)),
+                      _f(
+                        'Other Allowances',
+                        e.otherAllowances?.toStringAsFixed(0),
+                      ),
+                    ]),
                     const SizedBox(height: 20),
-                    _section(
-                      'Dates',
-                      [
-                        _f('Joining Date', _fmt(e.joiningDate)),
-                        _f('Start Date', _fmt(e.startDate)),
-                        _f('End Date', _fmt(e.endDate)),
-                      ],
-                    ),
+                    _section('Dates', [
+                      _f('Joining Date', _fmt(e.joiningDate)),
+                      _f('Start Date', _fmt(e.startDate)),
+                      _f('End Date', _fmt(e.endDate)),
+                    ]),
                     const SizedBox(height: 20),
 
+                    if (_hasEndDate) ...[
+                      Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF8E244D).withOpacity(0.07),
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                            color: const Color(0xFF8E244D).withOpacity(0.35),
+                          ),
+                        ),
+                        child: Row(
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFF8E244D).withOpacity(0.12),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: const Icon(
+                                Icons.auto_awesome_rounded,
+                                color: Color(0xFF8E244D),
+                                size: 20,
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    'إعلام — توليد تلقائي',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                  Text(
+                                    'End date detected · Generate E3lam PDF automatically',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.grey.shade600,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            _autoGenerating
+                                ? const SizedBox(
+                                    width: 22,
+                                    height: 22,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      color: Color(0xFF8E244D),
+                                    ),
+                                  )
+                                : FilledButton(
+                                    onPressed: () async {
+                                      await _autoGenerateE3lam();
+                                    },
+                                    style: FilledButton.styleFrom(
+                                      backgroundColor: const Color(0xFF8E244D),
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 16,
+                                        vertical: 10,
+                                      ),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                    ),
+                                    child: const Text(
+                                      'Generate',
+                                      style: TextStyle(fontSize: 13),
+                                    ),
+                                  ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                    ],
+
                     InkWell(
-                      onTap: onOpenDocs,
+                      onTap: widget.onOpenDocs,
                       borderRadius: BorderRadius.circular(12),
                       child: Container(
                         padding: const EdgeInsets.all(16),
@@ -282,7 +437,7 @@ class EmployeeDetailDialog extends StatelessWidget {
                                     style: TextStyle(fontWeight: FontWeight.w700),
                                   ),
                                   Text(
-                                    '$docCount file(s) attached',
+                                    '${widget.docCount} file(s) attached',
                                     style: TextStyle(
                                       fontSize: 13,
                                       color: Colors.grey.shade600,
@@ -301,221 +456,54 @@ class EmployeeDetailDialog extends StatelessWidget {
                       ),
                     ),
 
-                      const SizedBox(height: 12),
-
-InkWell(
-  onTap: () => _openE3lamForm(context),
-  borderRadius: BorderRadius.circular(12),
-  child: Container(
-    padding: const EdgeInsets.all(16),
-    decoration: BoxDecoration(
-      color: const Color(0xFF8E244D).withOpacity(0.06),
-      borderRadius: BorderRadius.circular(12),
-      border: Border.all(
-        color: const Color(0xFF8E244D).withOpacity(0.2),
-      ),
-    ),
-    child: Row(
-      children: [
-        Container(
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            color: const Color(0xFF8E244D).withOpacity(0.1),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: const Icon(
-            Icons.assignment_rounded,
-            color: Color(0xFF8E244D),
-            size: 20,
-          ),
-        ),
-        const SizedBox(width: 12),
-        const Expanded(
-          child: Text(
-            'إعلام عن ترك أجير عمله في المؤسسة',
-            style: TextStyle(fontWeight: FontWeight.w700),
-          ),
-        ),
-        const Icon(
-          Icons.arrow_forward_ios_rounded,
-          size: 16,
-          color: Color(0xFF8E244D),
-        ),
-      ],
-    ),
-  ),
-),
                     const SizedBox(height: 12),
 
-                    // R3-1 COMPANY LETTER
-                    InkWell(
+                    _formTile(
+                      color: const Color(0xFF8E244D),
+                      icon: Icons.assignment_rounded,
+                      title: 'إعلام عن ترك أجير عمله في المؤسسة',
+                      subtitle: 'Open form to review and edit before saving',
+                      onTap: () => _openE3lamForm(context),
+                    ),
+
+                    const SizedBox(height: 12),
+
+                    _formTile(
+                      color: const Color(0xFF2E7D32),
+                      icon: Icons.business_rounded,
+                      title: 'كتاب طلب تسجيل مستخدمين/أجراء (R3-1)',
+                      subtitle: 'Fill company registration letter form',
                       onTap: () => _openR3Form(context),
-                      borderRadius: BorderRadius.circular(12),
-                      child: Container(
-                        padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF2E7D32).withOpacity(0.06),
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(
-                            color: const Color(0xFF2E7D32).withOpacity(0.2),
-                          ),
-                        ),
-                        child: Row(
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                color: const Color(0xFF2E7D32).withOpacity(0.1),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: const Icon(
-                                Icons.business_rounded,
-                                color: Color(0xFF2E7D32),
-                                size: 20,
-                              ),
-                            ),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text(
-                                    'كتاب طلب تسجيل مستخدمين/أجراء (R3-1)',
-                                    style: TextStyle(fontWeight: FontWeight.w700),
-                                  ),
-                                  Text(
-                                    'Fill company registration letter form',
-                                    style: TextStyle(
-                                      fontSize: 13,
-                                      color: Colors.grey.shade600,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const Icon(
-                              Icons.arrow_forward_ios_rounded,
-                              size: 16,
-                              color: Color(0xFF2E7D32),
-                            ),
-                          ],
-                        ),
-                      ),
                     ),
 
                     const SizedBox(height: 12),
 
-                    // R3 EMPLOYEE FORM
-                    InkWell(
+                    _formTile(
+                      color: const Color(0xFF6A1B9A),
+                      icon: Icons.assignment_ind_rounded,
+                      title: 'طلب تسجيل مستخدم/أجير جديد (R3)',
+                      subtitle: 'Fill employee R3 form and save to docs',
                       onTap: () => _openR3EmployeeForm(context),
-                      borderRadius: BorderRadius.circular(12),
-                      child: Container(
-                        padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF6A1B9A).withOpacity(0.06),
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(
-                            color: const Color(0xFF6A1B9A).withOpacity(0.2),
-                          ),
-                        ),
-                        child: Row(
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                color: const Color(0xFF6A1B9A).withOpacity(0.1),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: const Icon(
-                                Icons.assignment_ind_rounded,
-                                color: Color(0xFF6A1B9A),
-                                size: 20,
-                              ),
-                            ),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text(
-                                    'طلب تسجيل مستخدم/أجير جديد (R3)',
-                                    style: TextStyle(fontWeight: FontWeight.w700),
-                                  ),
-                                  Text(
-                                    'Fill employee R3 form and save to employee + company docs',
-                                    style: TextStyle(
-                                      fontSize: 13,
-                                      color: Colors.grey.shade600,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const Icon(
-                              Icons.arrow_forward_ios_rounded,
-                              size: 16,
-                              color: Color(0xFF6A1B9A),
-                            ),
-                          ],
-                        ),
-                      ),
                     ),
 
                     const SizedBox(height: 12),
 
-                    InkWell(
+                    _formTile(
+                      color: const Color(0xFF0D47A1),
+                      icon: Icons.description_rounded,
+                      title: 'بيان معلومات المستخدم (R4)',
+                      subtitle: 'Fill R4 government form data',
                       onTap: () => _openR4Form(context),
-                      borderRadius: BorderRadius.circular(12),
-                      child: Container(
-                        padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF0D47A1).withOpacity(0.06),
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(
-                            color: const Color(0xFF0D47A1).withOpacity(0.2),
-                          ),
-                        ),
-                        child: Row(
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                color: const Color(0xFF0D47A1).withOpacity(0.1),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: const Icon(
-                                Icons.description_rounded,
-                                color: Color(0xFF0D47A1),
-                                size: 20,
-                              ),
-                            ),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text(
-                                    'بيان معلومات المستخدم (R4)',
-                                    style: TextStyle(fontWeight: FontWeight.w700),
-                                  ),
-                                  Text(
-                                    'Fill R4 government form data',
-                                    style: TextStyle(
-                                      fontSize: 13,
-                                      color: Colors.grey.shade600,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const Icon(
-                              Icons.arrow_forward_ios_rounded,
-                              size: 16,
-                              color: Color(0xFF0D47A1),
-                            ),
-                          ],
-                        ),
-                      ),
+                    ),
+
+                    const SizedBox(height: 12),
+
+                    _formTile(
+                      color: const Color(0xFFEF6C00),
+                      icon: Icons.table_chart_rounded,
+                      title: 'كشف إجمالي بالمستخدمين الذين تركوا العمل (R7)',
+                      subtitle: 'Fill R7 form and save PDF to company documents',
+                      onTap: () => _openR7Form(context),
                     ),
 
                     const SizedBox(height: 16),
@@ -524,13 +512,10 @@ InkWell(
                       width: double.infinity,
                       child: OutlinedButton.icon(
                         onPressed: () => _deleteEmployee(context),
-                        icon: const Icon(
-                          Icons.delete_forever_rounded,
-                          size: 20,
-                        ),
+                        icon: const Icon(Icons.delete_forever_rounded, size: 20),
                         label: const Text('Delete Employee'),
                         style: OutlinedButton.styleFrom(
-                          foregroundColor: Colors.red.shade700,
+                          foregroundColor: Colors.red,
                           side: BorderSide(color: Colors.red.shade300),
                           padding: const EdgeInsets.symmetric(vertical: 14),
                           shape: RoundedRectangleBorder(
@@ -543,6 +528,59 @@ InkWell(
                 ),
               ),
             ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _formTile({
+    required Color color,
+    required IconData icon,
+    required String title,
+    required String subtitle,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: color.withOpacity(0.06),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: color.withOpacity(0.2)),
+        ),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: color.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Icon(icon, color: color, size: 20),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(fontWeight: FontWeight.w700),
+                  ),
+                  Text(
+                    subtitle,
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: Colors.grey.shade600,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Icon(Icons.arrow_forward_ios_rounded, size: 16, color: color),
           ],
         ),
       ),

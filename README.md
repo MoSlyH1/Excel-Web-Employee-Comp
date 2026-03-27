@@ -193,6 +193,9 @@ Then run:
 docker compose down
 
 ---
+# Opening up database
+
+docker exec -it employee_db psql -U postgres -d employeehub
 
 # Notes
 

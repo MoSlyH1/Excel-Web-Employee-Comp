@@ -76,36 +76,38 @@ class Employee {
   final String? poBoxNumber;
   final String? poBoxArea;
   // R3 Form fields
-final DateTime? r3SocialSecurityStartDate;
-final String? employerName;
-final String? employerTitle;
-final String? r3FinancialNumber;
-final DateTime? r3RegistrationDate;
-final String? r3RejectionReason;
-  
-final String? institutionResponsible;
-final String? institutionNssfNumber;
-final String? institutionPlace;
-final String? institutionNumber;
-final String? institutionPhone;
-final String? institutionFullAddress;
-final String? employeeFundNumber;
-final String? employeeName;
-final String? employeeSurname;
-final String? fatherNameE3lam;
-final String? motherNameE3lam;
-final String? birthDatePlace;
-final String? registerNumberE3lam;
-final String? leftWorkSince;
-final String? leaveReason;
-final String? currentJob;
-final String? salaryAtLeaveDate;
-final String? beirutDate;
-final String? employeeSignedName;
-final String? centerNumber;
-final String? registrationDepartmentName;
-final String? registrationDepartmentDate;
-final String? registrationProcessedDate;
+  final DateTime? r3SocialSecurityStartDate;
+  final String? employerName;
+  final String? employerTitle;
+  final String? r3FinancialNumber;
+  final DateTime? r3RegistrationDate;
+  final String? r3RejectionReason;
+
+  // E3lam Form fields
+  final String? institutionResponsible;
+  final String? institutionNssfNumber;
+  final String? institutionPlace;
+  final String? institutionNumber;
+  final String? institutionPhone;
+  final String? institutionFullAddress;
+  final String? employeeFundNumber;
+  final String? employeeName;
+  final String? employeeSurname;
+  final String? fatherNameE3lam;
+  final String? motherNameE3lam;
+  final String? birthDatePlace;
+  final String? registerNumberE3lam;
+  final String? leftWorkSince;
+  final String? leaveReason;
+  final String? currentJob;
+  final String? salaryAtLeaveDate;
+  final String? beirutDate;
+  final String? employeeSignedName;
+  final String? centerNumber;
+  final String? registrationDepartmentName;
+  final String? registrationDepartmentDate;
+  final String? registrationProcessedDate;
+
   Employee({
     required this.id,
     required this.employeeId,
@@ -171,46 +173,46 @@ final String? registrationProcessedDate;
     this.floor,
     this.propertyNumber,
     this.fax,
-    this.poBoxNumber,   // 🆕
-    this.poBoxArea,      // 🆕
-    this.socialSecurityNumber, this.workStartDate,
-this.r3SocialSecurityStartDate,
-this.employerName,
-this.employerTitle,
-this.r3FinancialNumber,
-this.r3RegistrationDate,
-this.r3RejectionReason,
-
-this.institutionResponsible,
-this.institutionNssfNumber,
-this.institutionPlace,
-this.institutionNumber,
-this.institutionPhone,
-this.institutionFullAddress,
-this.employeeFundNumber,
-this.employeeName,
-this.employeeSurname,
-this.fatherNameE3lam,
-this.motherNameE3lam,
-this.birthDatePlace,
-this.registerNumberE3lam,
-this.leftWorkSince,
-this.leaveReason,
-this.currentJob,
-this.salaryAtLeaveDate,
-this.beirutDate,
-this.employeeSignedName,
-this.centerNumber,
-this.registrationDepartmentName,
-this.registrationDepartmentDate,
-this.registrationProcessedDate,
+    this.poBoxNumber,
+    this.poBoxArea,
+    this.socialSecurityNumber,
+    this.workStartDate,
+    this.r3SocialSecurityStartDate,
+    this.employerName,
+    this.employerTitle,
+    this.r3FinancialNumber,
+    this.r3RegistrationDate,
+    this.r3RejectionReason,
+    this.institutionResponsible,
+    this.institutionNssfNumber,
+    this.institutionPlace,
+    this.institutionNumber,
+    this.institutionPhone,
+    this.institutionFullAddress,
+    this.employeeFundNumber,
+    this.employeeName,
+    this.employeeSurname,
+    this.fatherNameE3lam,
+    this.motherNameE3lam,
+    this.birthDatePlace,
+    this.registerNumberE3lam,
+    this.leftWorkSince,
+    this.leaveReason,
+    this.currentJob,
+    this.salaryAtLeaveDate,
+    this.beirutDate,
+    this.employeeSignedName,
+    this.centerNumber,
+    this.registrationDepartmentName,
+    this.registrationDepartmentDate,
+    this.registrationProcessedDate,
   });
 
   factory Employee.fromJson(Map<String, dynamic> j) {
     return Employee(
       id: j['id'] is String
-    ? int.tryParse(j['id']) ?? 0
-    : j['id'] as int? ?? 0,
+          ? int.tryParse(j['id']) ?? 0
+          : j['id'] as int? ?? 0,
       employeeId: j['employee_id'] as String? ?? '',
       fullName: j['full_name'] as String? ?? '',
       nationality: j['nationality'] as String?,
@@ -276,44 +278,41 @@ this.registrationProcessedDate,
       floor: j['floor'] as String?,
       propertyNumber: j['property_number'] as String?,
       fax: j['fax'] as String?,
-      // 🆕 PO Box fields from JSON
       socialSecurityNumber: j['social_security_number'] as String?,
-workStartDate: _dt(j['work_start_date']),
+      workStartDate: _dt(j['work_start_date']),
       poBoxNumber: j['po_box_number'] as String?,
       poBoxArea: j['po_box_area'] as String?,
-r3SocialSecurityStartDate: _dt(j['r3_social_security_start_date']),
-employerName: j['employer_name'] as String?,
-employerTitle: j['employer_title'] as String?,
-r3FinancialNumber: j['r3_financial_number'] as String?,
-r3RegistrationDate: _dt(j['r3_registration_date']),
-r3RejectionReason: j['r3_rejection_reason'] as String?,
-
-institutionResponsible: j['institution_responsible'],
-institutionNssfNumber: j['institution_nssf_number'],
-institutionPlace: j['institution_place'],
-institutionNumber: j['institution_number'],
-institutionPhone: j['institution_phone'],
-institutionFullAddress: j['institution_full_address'],
-employeeFundNumber: j['employee_fund_number'],
-employeeName: j['employee_name'],
-employeeSurname: j['employee_surname'],
-fatherNameE3lam: j['father_name'],
-motherNameE3lam: j['mother_name'],
-birthDatePlace: j['birth_date_place'],
-registerNumberE3lam: j['register_number'],
-leftWorkSince: j['left_work_since'],
-leaveReason: j['leave_reason'],
-currentJob: j['current_job'],
-salaryAtLeaveDate: j['salary_at_leave_date'],
-beirutDate: j['beirut_date'],
-employeeSignedName: j['employee_signed_name'],
-centerNumber: j['center_number'],
-registrationDepartmentName: j['registration_department_name'],
-registrationDepartmentDate: j['registration_department_date'],
-registrationProcessedDate: j['registration_processed_date'],
+      r3SocialSecurityStartDate: _dt(j['r3_social_security_start_date']),
+      employerName: j['employer_name'] as String?,
+      employerTitle: j['employer_title'] as String?,
+      r3FinancialNumber: j['r3_financial_number'] as String?,
+      r3RegistrationDate: _dt(j['r3_registration_date']),
+      r3RejectionReason: j['r3_rejection_reason'] as String?,
+      institutionResponsible: j['institution_responsible'] as String?,
+      institutionNssfNumber: j['institution_nssf_number'] as String?,
+      institutionPlace: j['institution_place'] as String?,
+      institutionNumber: j['institution_number'] as String?,
+      institutionPhone: j['institution_phone'] as String?,
+      institutionFullAddress: j['institution_full_address'] as String?,
+      employeeFundNumber: j['employee_fund_number'] as String?,
+      employeeName: j['employee_name'] as String?,
+      employeeSurname: j['employee_surname'] as String?,
+      fatherNameE3lam: j['father_name_e3lam'] as String?,
+      motherNameE3lam: j['mother_name_e3lam'] as String?,
+      birthDatePlace: j['birth_date_place'] as String?,
+      registerNumberE3lam: j['register_number_e3lam'] as String?,
+      leftWorkSince: j['left_work_since'] as String?,
+      leaveReason: j['leave_reason'] as String?,
+      currentJob: j['current_job'] as String?,
+      salaryAtLeaveDate: j['salary_at_leave_date'] as String?,
+      beirutDate: j['beirut_date'] as String?,
+      employeeSignedName: j['employee_signed_name'] as String?,
+      centerNumber: j['center_number'] as String?,
+      registrationDepartmentName: j['registration_department_name'] as String?,
+      registrationDepartmentDate: j['registration_department_date'] as String?,
+      registrationProcessedDate: j['registration_processed_date'] as String?,
     );
   }
-
 
   static double? _d(dynamic v) {
     if (v == null) return null;
