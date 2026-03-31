@@ -23,9 +23,11 @@ class Employee {
   final double? basicSalary;
   final double? otherAllowances;
   final String? bankAccountNb;
+
   // R3 Form fields
   final String? socialSecurityNumber;
   final DateTime? workStartDate;
+
   // R4 Form fields
   final String? firstName;
   final String? lastName;
@@ -56,10 +58,9 @@ class Employee {
   final String? spouseRegisterPlace;
   final bool? spouseWorks;
   final String? spouseWorkDetails;
-  final String? spouseRegistrationNumber;   // personal registration number (ministry)
+  final String? spouseRegistrationNumber;
   final String? spouseWorkSector;
   final String? spouseWorkCompany;
-  // Second registration number (also to Ministry of Finance)
   final String? spouseRegistrationNumber2;
 
   // Address
@@ -72,9 +73,9 @@ class Employee {
   final String? floor;
   final String? propertyNumber;
   final String? fax;
-  // 🆕 PO Box fields
   final String? poBoxNumber;
   final String? poBoxArea;
+
   // R3 Form fields
   final DateTime? r3SocialSecurityStartDate;
   final String? employerName;
@@ -107,6 +108,59 @@ class Employee {
   final String? registrationDepartmentName;
   final String? registrationDepartmentDate;
   final String? registrationProcessedDate;
+
+  // ── Tasreeh Zawja (CNSS 485 A) ───────────────────────────────────
+  final String? tasreehSubscriberRegNum;
+  final String? tasreehSubscriberName;
+  final String? tasreehSubscriberMother;
+  final String? tasreehSubscriberFather;
+  final String? tasreehRegisterNum;
+  final String? tasreehCompanyName;
+  final String? tasreehCompanyRegNum;
+  final String? tasreehAddress;
+  final String? tasreehSpouseFullName;
+  final DateTime? tasreehSpouseDob;
+  final bool? tasreehSpouseHasWork;
+  final String? tasreehSpouseWorkType;
+  final DateTime? tasreehDeclarationDate;
+
+  // ── Employee Declaration (CNSS-2 AA / تصريح باستخدام أجير) ───────
+  final String? declEmployerName;
+  final String? declCommercialRegPlace;
+  final String? declCommercialRegNumber;
+  final String? declEmployerPhone;
+  final String? declWorkplaceAddress;
+  final String? declEmployeeGender;
+  final String? declEmployeeFirstName;
+  final String? declEmployeeLastName;
+  final String? declEmployeeFatherName;
+  final String? declEmployeeMotherName;
+  final String? declBirthDatePlace;
+  final String? declBirthDistrict;
+  final String? declRegisterNumber;
+  final String? declMaritalStatus;
+  final String? declReligion;
+  final String? declIdResidencePlace;
+  final String? declCurrentGovernorate;
+  final String? declCurrentDistrict;
+  final String? declCurrentCity;
+  final String? declCurrentNeighborhood;
+  final String? declCurrentStreet;
+  final String? declCurrentBuildingFloor;
+  final String? declCurrentPhone;
+  final String? declWorkStartDate;
+  final String? declMonthlyHours;
+  final String? declWorkType;
+  final String? declCurrentJob;
+  final String? declCurrentSalary;
+  final String? declSalaryAtEntry;
+  final String? declPaymentMethod;
+  final String? declNationality;
+  final String? declWorkPermit;
+  final bool? declHasOtherEmployer;
+  final String? declOtherEmployerInfo;
+  final String? declEmployeeSignedName;
+  final DateTime? declDeclarationDate;
 
   Employee({
     required this.id,
@@ -206,6 +260,57 @@ class Employee {
     this.registrationDepartmentName,
     this.registrationDepartmentDate,
     this.registrationProcessedDate,
+    // Tasreeh Zawja
+    this.tasreehSubscriberRegNum,
+    this.tasreehSubscriberName,
+    this.tasreehSubscriberMother,
+    this.tasreehSubscriberFather,
+    this.tasreehRegisterNum,
+    this.tasreehCompanyName,
+    this.tasreehCompanyRegNum,
+    this.tasreehAddress,
+    this.tasreehSpouseFullName,
+    this.tasreehSpouseDob,
+    this.tasreehSpouseHasWork,
+    this.tasreehSpouseWorkType,
+    this.tasreehDeclarationDate,
+    // Declaration Employee
+    this.declEmployerName,
+    this.declCommercialRegPlace,
+    this.declCommercialRegNumber,
+    this.declEmployerPhone,
+    this.declWorkplaceAddress,
+    this.declEmployeeGender,
+    this.declEmployeeFirstName,
+    this.declEmployeeLastName,
+    this.declEmployeeFatherName,
+    this.declEmployeeMotherName,
+    this.declBirthDatePlace,
+    this.declBirthDistrict,
+    this.declRegisterNumber,
+    this.declMaritalStatus,
+    this.declReligion,
+    this.declIdResidencePlace,
+    this.declCurrentGovernorate,
+    this.declCurrentDistrict,
+    this.declCurrentCity,
+    this.declCurrentNeighborhood,
+    this.declCurrentStreet,
+    this.declCurrentBuildingFloor,
+    this.declCurrentPhone,
+    this.declWorkStartDate,
+    this.declMonthlyHours,
+    this.declWorkType,
+    this.declCurrentJob,
+    this.declCurrentSalary,
+    this.declSalaryAtEntry,
+    this.declPaymentMethod,
+    this.declNationality,
+    this.declWorkPermit,
+    this.declHasOtherEmployer,
+    this.declOtherEmployerInfo,
+    this.declEmployeeSignedName,
+    this.declDeclarationDate,
   });
 
   factory Employee.fromJson(Map<String, dynamic> j) {
@@ -252,7 +357,8 @@ class Employee {
           : j['number_of_children'] as int?,
       hasFinancialNumber: j['has_financial_number'] as bool?,
       personalFinancialNumber: j['personal_financial_number'] as String?,
-      ministryRegistrationNumber: j['ministry_registration_number'] as String?,
+      ministryRegistrationNumber:
+          j['ministry_registration_number'] as String?,
       spouseName: j['spouse_name'] as String?,
       spouseMaidenName: j['spouse_maiden_name'] as String?,
       spouseFatherName: j['spouse_father_name'] as String?,
@@ -268,7 +374,8 @@ class Employee {
       spouseRegistrationNumber: j['spouse_registration_number'] as String?,
       spouseWorkSector: j['spouse_work_sector'] as String?,
       spouseWorkCompany: j['spouse_work_company'] as String?,
-      spouseRegistrationNumber2: j['spouse_registration_number_2'] as String?,
+      spouseRegistrationNumber2:
+          j['spouse_registration_number_2'] as String?,
       governorate: j['governorate'] as String?,
       district: j['district'] as String?,
       area: j['area'] as String?,
@@ -308,9 +415,65 @@ class Employee {
       beirutDate: j['beirut_date'] as String?,
       employeeSignedName: j['employee_signed_name'] as String?,
       centerNumber: j['center_number'] as String?,
-      registrationDepartmentName: j['registration_department_name'] as String?,
-      registrationDepartmentDate: j['registration_department_date'] as String?,
-      registrationProcessedDate: j['registration_processed_date'] as String?,
+      registrationDepartmentName:
+          j['registration_department_name'] as String?,
+      registrationDepartmentDate:
+          j['registration_department_date'] as String?,
+      registrationProcessedDate:
+          j['registration_processed_date'] as String?,
+      // Tasreeh Zawja
+      tasreehSubscriberRegNum:
+          j['tasreeh_subscriber_reg_num'] as String?,
+      tasreehSubscriberName: j['tasreeh_subscriber_name'] as String?,
+      tasreehSubscriberMother: j['tasreeh_subscriber_mother'] as String?,
+      tasreehSubscriberFather: j['tasreeh_subscriber_father'] as String?,
+      tasreehRegisterNum: j['tasreeh_register_num'] as String?,
+      tasreehCompanyName: j['tasreeh_company_name'] as String?,
+      tasreehCompanyRegNum: j['tasreeh_company_reg_num'] as String?,
+      tasreehAddress: j['tasreeh_address'] as String?,
+      tasreehSpouseFullName: j['tasreeh_spouse_full_name'] as String?,
+      tasreehSpouseDob: _dt(j['tasreeh_spouse_dob']),
+      tasreehSpouseHasWork: j['tasreeh_spouse_has_work'] as bool?,
+      tasreehSpouseWorkType: j['tasreeh_spouse_work_type'] as String?,
+      tasreehDeclarationDate: _dt(j['tasreeh_declaration_date']),
+      // Declaration Employee
+      declEmployerName: j['decl_employer_name'] as String?,
+      declCommercialRegPlace: j['decl_commercial_reg_place'] as String?,
+      declCommercialRegNumber: j['decl_commercial_reg_number'] as String?,
+      declEmployerPhone: j['decl_employer_phone'] as String?,
+      declWorkplaceAddress: j['decl_workplace_address'] as String?,
+      declEmployeeGender: j['decl_employee_gender'] as String?,
+      declEmployeeFirstName: j['decl_employee_first_name'] as String?,
+      declEmployeeLastName: j['decl_employee_last_name'] as String?,
+      declEmployeeFatherName: j['decl_employee_father_name'] as String?,
+      declEmployeeMotherName: j['decl_employee_mother_name'] as String?,
+      declBirthDatePlace: j['decl_birth_date_place'] as String?,
+      declBirthDistrict: j['decl_birth_district'] as String?,
+      declRegisterNumber: j['decl_register_number'] as String?,
+      declMaritalStatus: j['decl_marital_status'] as String?,
+      declReligion: j['decl_religion'] as String?,
+      declIdResidencePlace: j['decl_id_residence_place'] as String?,
+      declCurrentGovernorate: j['decl_current_governorate'] as String?,
+      declCurrentDistrict: j['decl_current_district'] as String?,
+      declCurrentCity: j['decl_current_city'] as String?,
+      declCurrentNeighborhood: j['decl_current_neighborhood'] as String?,
+      declCurrentStreet: j['decl_current_street'] as String?,
+      declCurrentBuildingFloor:
+          j['decl_current_building_floor'] as String?,
+      declCurrentPhone: j['decl_current_phone'] as String?,
+      declWorkStartDate: j['decl_work_start_date'] as String?,
+      declMonthlyHours: j['decl_monthly_hours'] as String?,
+      declWorkType: j['decl_work_type'] as String?,
+      declCurrentJob: j['decl_current_job'] as String?,
+      declCurrentSalary: j['decl_current_salary'] as String?,
+      declSalaryAtEntry: j['decl_salary_at_entry'] as String?,
+      declPaymentMethod: j['decl_payment_method'] as String?,
+      declNationality: j['decl_nationality'] as String?,
+      declWorkPermit: j['decl_work_permit'] as String?,
+      declHasOtherEmployer: j['decl_has_other_employer'] as bool?,
+      declOtherEmployerInfo: j['decl_other_employer_info'] as String?,
+      declEmployeeSignedName: j['decl_employee_signed_name'] as String?,
+      declDeclarationDate: _dt(j['decl_declaration_date']),
     );
   }
 

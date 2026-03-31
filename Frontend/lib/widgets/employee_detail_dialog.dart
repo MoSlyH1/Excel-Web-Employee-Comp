@@ -9,11 +9,8 @@ import 'r3_form_dialog.dart';
 import 'r4_form_dialog.dart';
 import 'e3lam_form_dialog.dart';
 import 'r7_form_dialog.dart';
-
-// If generateE3lamPdfFromEmployee is NOT inside e3lam_form_dialog.dart,
-// import the correct file here instead.
-// Example:
-// import '../services/e3lam_pdf_service.dart';
+import 'tasryh_zawjaa_form_dialog.dart';
+import 'declaration_employee_form_dialog.dart'; // ← NEW
 
 class EmployeeDetailDialog extends StatefulWidget {
   final Employee employee;
@@ -41,7 +38,6 @@ class _EmployeeDetailDialogState extends State<EmployeeDetailDialog> {
 
   Employee get e => widget.employee;
 
-  // Keep this simple unless your Employee model really has leftDate.
   bool get _hasEndDate => e.endDate != null;
 
   Future<void> _autoGenerateE3lam() async {
@@ -91,9 +87,7 @@ class _EmployeeDetailDialogState extends State<EmployeeDetailDialog> {
         ),
       );
     } finally {
-      if (mounted) {
-        setState(() => _autoGenerating = false);
-      }
+      if (mounted) setState(() => _autoGenerating = false);
     }
   }
 
@@ -125,11 +119,8 @@ class _EmployeeDetailDialogState extends State<EmployeeDetailDialog> {
     final secondConfirm = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        icon: const Icon(
-          Icons.warning_amber_rounded,
-          color: Colors.red,
-          size: 48,
-        ),
+        icon: const Icon(Icons.warning_amber_rounded,
+            color: Colors.red, size: 48),
         title: const Text('Are you absolutely sure?'),
         content: Text(
           'This action CANNOT be undone.\n\n'
@@ -155,7 +146,6 @@ class _EmployeeDetailDialogState extends State<EmployeeDetailDialog> {
 
     try {
       await ApiService.deleteEmployee(e.id!);
-
       if (context.mounted) {
         Navigator.pop(context);
         widget.onDataChanged();
@@ -178,6 +168,7 @@ class _EmployeeDetailDialogState extends State<EmployeeDetailDialog> {
     }
   }
 
+  // ── Navigation helpers ─────────────────────────────────────────
   void _openR3Form(BuildContext context) {
     Navigator.pop(context);
     showDialog(
@@ -233,6 +224,32 @@ class _EmployeeDetailDialogState extends State<EmployeeDetailDialog> {
     );
   }
 
+  void _openTasreehZawjaForm(BuildContext context) {
+    Navigator.pop(context);
+    showDialog(
+      context: context,
+      builder: (_) => TasreehZawjaFormDialog(
+        employee: e,
+        onDataChanged: widget.onDataChanged,
+      ),
+    );
+  }
+
+  // ── NEW ────────────────────────────────────────────────────────
+  void _openDeclarationEmployeeForm(BuildContext context) {
+    Navigator.pop(context);
+    showDialog(
+      context: context,
+      builder: (_) => DeclarationEmployeeFormDialog(
+        employee: e,
+        onDataChanged: widget.onDataChanged,
+      ),
+    );
+  }
+
+  // ══════════════════════════════════════════════════════════════
+  // BUILD
+  // ══════════════════════════════════════════════════════════════
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -242,13 +259,15 @@ class _EmployeeDetailDialogState extends State<EmployeeDetailDialog> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            // ── Header ──────────────────────────────────────────
             Container(
               padding: const EdgeInsets.all(24),
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
                   colors: [Color(0xFF0D47A1), Color(0xFF1976D2)],
                 ),
-                borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                borderRadius:
+                    BorderRadius.vertical(top: Radius.circular(20)),
               ),
               child: Row(
                 children: [
@@ -256,7 +275,9 @@ class _EmployeeDetailDialogState extends State<EmployeeDetailDialog> {
                     radius: 28,
                     backgroundColor: Colors.white24,
                     child: Text(
-                      e.fullName.isNotEmpty ? e.fullName[0].toUpperCase() : '?',
+                      e.fullName.isNotEmpty
+                          ? e.fullName[0].toUpperCase()
+                          : '?',
                       style: const TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w700,
@@ -295,6 +316,8 @@ class _EmployeeDetailDialogState extends State<EmployeeDetailDialog> {
                 ],
               ),
             ),
+
+            // ── Body ────────────────────────────────────────────
             Flexible(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.all(24),
@@ -315,10 +338,8 @@ class _EmployeeDetailDialogState extends State<EmployeeDetailDialog> {
                       _f('Position', e.jobPosition),
                       _f('Wage Type', e.wageType),
                       _f('Basic Salary', e.basicSalary?.toStringAsFixed(0)),
-                      _f(
-                        'Other Allowances',
-                        e.otherAllowances?.toStringAsFixed(0),
-                      ),
+                      _f('Other Allowances',
+                          e.otherAllowances?.toStringAsFixed(0)),
                     ]),
                     const SizedBox(height: 20),
                     _section('Dates', [
@@ -328,14 +349,17 @@ class _EmployeeDetailDialogState extends State<EmployeeDetailDialog> {
                     ]),
                     const SizedBox(height: 20),
 
+                    // ── Auto E3lam banner ──────────────────────
                     if (_hasEndDate) ...[
                       Container(
                         padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
-                          color: const Color(0xFF8E244D).withOpacity(0.07),
+                          color:
+                              const Color(0xFF8E244D).withOpacity(0.07),
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(
-                            color: const Color(0xFF8E244D).withOpacity(0.35),
+                            color: const Color(0xFF8E244D)
+                                .withOpacity(0.35),
                           ),
                         ),
                         child: Row(
@@ -343,7 +367,8 @@ class _EmployeeDetailDialogState extends State<EmployeeDetailDialog> {
                             Container(
                               padding: const EdgeInsets.all(8),
                               decoration: BoxDecoration(
-                                color: const Color(0xFF8E244D).withOpacity(0.12),
+                                color: const Color(0xFF8E244D)
+                                    .withOpacity(0.12),
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: const Icon(
@@ -355,7 +380,8 @@ class _EmployeeDetailDialogState extends State<EmployeeDetailDialog> {
                             const SizedBox(width: 12),
                             Expanded(
                               child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                                crossAxisAlignment:
+                                    CrossAxisAlignment.start,
                                 children: [
                                   const Text(
                                     'إعلام — توليد تلقائي',
@@ -385,17 +411,18 @@ class _EmployeeDetailDialogState extends State<EmployeeDetailDialog> {
                                     ),
                                   )
                                 : FilledButton(
-                                    onPressed: () async {
-                                      await _autoGenerateE3lam();
-                                    },
+                                    onPressed: _autoGenerateE3lam,
                                     style: FilledButton.styleFrom(
-                                      backgroundColor: const Color(0xFF8E244D),
-                                      padding: const EdgeInsets.symmetric(
+                                      backgroundColor:
+                                          const Color(0xFF8E244D),
+                                      padding:
+                                          const EdgeInsets.symmetric(
                                         horizontal: 16,
                                         vertical: 10,
                                       ),
                                       shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(8),
+                                        borderRadius:
+                                            BorderRadius.circular(8),
                                       ),
                                     ),
                                     child: const Text(
@@ -409,32 +436,35 @@ class _EmployeeDetailDialogState extends State<EmployeeDetailDialog> {
                       const SizedBox(height: 12),
                     ],
 
+                    // ── Documents tile ─────────────────────────
                     InkWell(
                       onTap: widget.onOpenDocs,
                       borderRadius: BorderRadius.circular(12),
                       child: Container(
                         padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
-                          color: const Color(0xFF00897B).withOpacity(0.06),
+                          color:
+                              const Color(0xFF00897B).withOpacity(0.06),
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(
-                            color: const Color(0xFF00897B).withOpacity(0.2),
+                            color: const Color(0xFF00897B)
+                                .withOpacity(0.2),
                           ),
                         ),
                         child: Row(
                           children: [
-                            const Icon(
-                              Icons.folder_open_rounded,
-                              color: Color(0xFF00897B),
-                            ),
+                            const Icon(Icons.folder_open_rounded,
+                                color: Color(0xFF00897B)),
                             const SizedBox(width: 12),
                             Expanded(
                               child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                                crossAxisAlignment:
+                                    CrossAxisAlignment.start,
                                 children: [
                                   const Text(
                                     'Documents',
-                                    style: TextStyle(fontWeight: FontWeight.w700),
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w700),
                                   ),
                                   Text(
                                     '${widget.docCount} file(s) attached',
@@ -458,34 +488,36 @@ class _EmployeeDetailDialogState extends State<EmployeeDetailDialog> {
 
                     const SizedBox(height: 12),
 
+                    // ── Form tiles ────────────────────────────
                     _formTile(
                       color: const Color(0xFF8E244D),
                       icon: Icons.assignment_rounded,
                       title: 'إعلام عن ترك أجير عمله في المؤسسة',
-                      subtitle: 'Open form to review and edit before saving',
+                      subtitle:
+                          'Open form to review and edit before saving',
                       onTap: () => _openE3lamForm(context),
                     ),
-
                     const SizedBox(height: 12),
 
                     _formTile(
                       color: const Color(0xFF2E7D32),
                       icon: Icons.business_rounded,
-                      title: 'كتاب طلب تسجيل مستخدمين/أجراء (R3-1)',
+                      title:
+                          'كتاب طلب تسجيل مستخدمين/أجراء (R3-1)',
                       subtitle: 'Fill company registration letter form',
                       onTap: () => _openR3Form(context),
                     ),
-
                     const SizedBox(height: 12),
 
                     _formTile(
                       color: const Color(0xFF6A1B9A),
                       icon: Icons.assignment_ind_rounded,
-                      title: 'طلب تسجيل مستخدم/أجير جديد (R3)',
-                      subtitle: 'Fill employee R3 form and save to docs',
+                      title:
+                          'طلب تسجيل مستخدم/أجير جديد (R3)',
+                      subtitle:
+                          'Fill employee R3 form and save to docs',
                       onTap: () => _openR3EmployeeForm(context),
                     ),
-
                     const SizedBox(height: 12),
 
                     _formTile(
@@ -495,29 +527,54 @@ class _EmployeeDetailDialogState extends State<EmployeeDetailDialog> {
                       subtitle: 'Fill R4 government form data',
                       onTap: () => _openR4Form(context),
                     ),
-
                     const SizedBox(height: 12),
 
                     _formTile(
                       color: const Color(0xFFEF6C00),
                       icon: Icons.table_chart_rounded,
-                      title: 'كشف إجمالي بالمستخدمين الذين تركوا العمل (R7)',
-                      subtitle: 'Fill R7 form and save PDF to company documents',
+                      title:
+                          'كشف إجمالي بالمستخدمين الذين تركوا العمل (R7)',
+                      subtitle:
+                          'Fill R7 form and save PDF to company documents',
                       onTap: () => _openR7Form(context),
+                    ),
+                    const SizedBox(height: 12),
+
+                    _formTile(
+                      color: const Color(0xFF1B5E20),
+                      icon: Icons.family_restroom_rounded,
+                      title: 'تصريح عن الزوجة (CNSS 485 A)',
+                      subtitle:
+                          'Fill spouse declaration form and save PDF',
+                      onTap: () => _openTasreehZawjaForm(context),
+                    ),
+                    const SizedBox(height: 12),
+
+                    // ── NEW ────────────────────────────────────
+                    _formTile(
+                      color: const Color(0xFF4A148C),
+                      icon: Icons.badge_rounded,
+                      title: 'تصريح باستخدام أجير (CNSS-2 AA)',
+                      subtitle:
+                          'Fill employee hiring declaration form and save PDF',
+                      onTap: () => _openDeclarationEmployeeForm(context),
                     ),
 
                     const SizedBox(height: 16),
 
+                    // ── Delete ─────────────────────────────────
                     SizedBox(
                       width: double.infinity,
                       child: OutlinedButton.icon(
                         onPressed: () => _deleteEmployee(context),
-                        icon: const Icon(Icons.delete_forever_rounded, size: 20),
+                        icon: const Icon(Icons.delete_forever_rounded,
+                            size: 20),
                         label: const Text('Delete Employee'),
                         style: OutlinedButton.styleFrom(
                           foregroundColor: Colors.red,
                           side: BorderSide(color: Colors.red.shade300),
-                          padding: const EdgeInsets.symmetric(vertical: 14),
+                          padding:
+                              const EdgeInsets.symmetric(vertical: 14),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
@@ -566,21 +623,19 @@ class _EmployeeDetailDialogState extends State<EmployeeDetailDialog> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    title,
-                    style: const TextStyle(fontWeight: FontWeight.w700),
-                  ),
+                  Text(title,
+                      style:
+                          const TextStyle(fontWeight: FontWeight.w700)),
                   Text(
                     subtitle,
                     style: TextStyle(
-                      fontSize: 13,
-                      color: Colors.grey.shade600,
-                    ),
+                        fontSize: 13, color: Colors.grey.shade600),
                   ),
                 ],
               ),
             ),
-            Icon(Icons.arrow_forward_ios_rounded, size: 16, color: color),
+            Icon(Icons.arrow_forward_ios_rounded,
+                size: 16, color: color),
           ],
         ),
       ),
@@ -600,11 +655,7 @@ class _EmployeeDetailDialogState extends State<EmployeeDetailDialog> {
           ),
         ),
         const SizedBox(height: 12),
-        Wrap(
-          spacing: 16,
-          runSpacing: 12,
-          children: children,
-        ),
+        Wrap(spacing: 16, runSpacing: 12, children: children),
       ],
     );
   }
@@ -615,17 +666,14 @@ class _EmployeeDetailDialogState extends State<EmployeeDetailDialog> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            label,
-            style: TextStyle(fontSize: 12, color: Colors.grey.shade500),
-          ),
+          Text(label,
+              style:
+                  TextStyle(fontSize: 12, color: Colors.grey.shade500)),
           const SizedBox(height: 2),
           Text(
             value ?? '—',
             style: const TextStyle(
-              fontWeight: FontWeight.w500,
-              fontSize: 14,
-            ),
+                fontWeight: FontWeight.w500, fontSize: 14),
           ),
         ],
       ),
