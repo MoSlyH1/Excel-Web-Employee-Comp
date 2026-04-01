@@ -11,6 +11,8 @@ import 'e3lam_form_dialog.dart';
 import 'r7_form_dialog.dart';
 import 'tasryh_zawjaa_form_dialog.dart';
 import 'declaration_employee_form_dialog.dart'; // ← NEW
+import 'edit_employee_dialog.dart'; // ← NEW
+import 'efada_form_dialog.dart'; // ← NEW
 
 class EmployeeDetailDialog extends StatefulWidget {
   final Employee employee;
@@ -246,6 +248,27 @@ class _EmployeeDetailDialogState extends State<EmployeeDetailDialog> {
       ),
     );
   }
+  void _openEfadaForm(BuildContext context) {
+  Navigator.pop(context);
+  showDialog(
+    context: context,
+    builder: (_) => EfadaFormDialog(
+      employee: e,
+      onDataChanged: widget.onDataChanged,
+    ),
+  );
+}
+
+  void _openEditEmployee(BuildContext context) {
+  Navigator.pop(context);
+  showDialog(
+    context: context,
+    builder: (_) => EditEmployeeDialog(
+      employee: e,
+      onDataChanged: widget.onDataChanged,
+    ),
+  );
+}
 
   // ══════════════════════════════════════════════════════════════
   // BUILD
@@ -310,9 +333,13 @@ class _EmployeeDetailDialogState extends State<EmployeeDetailDialog> {
                     ),
                   ),
                   IconButton(
-                    icon: const Icon(Icons.close, color: Colors.white),
-                    onPressed: () => Navigator.pop(context),
-                  ),
+  icon: const Icon(Icons.edit_rounded, color: Colors.white),
+  onPressed: () => _openEditEmployee(context),
+),
+IconButton(
+  icon: const Icon(Icons.close, color: Colors.white),
+  onPressed: () => Navigator.pop(context),
+),
                 ],
               ),
             ),
@@ -559,6 +586,14 @@ class _EmployeeDetailDialogState extends State<EmployeeDetailDialog> {
                           'Fill employee hiring declaration form and save PDF',
                       onTap: () => _openDeclarationEmployeeForm(context),
                     ),
+                    const SizedBox(height: 12),
+_formTile(
+  color: const Color(0xFF006064),
+  icon: Icons.medical_information_rounded,
+  title: 'إفادة عمل (CNSS 2M)',
+  subtitle: 'Fill work illness declaration and save PDF',
+  onTap: () => _openEfadaForm(context),
+),
 
                     const SizedBox(height: 16),
 

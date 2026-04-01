@@ -162,6 +162,65 @@ class Employee {
   final String? declEmployeeSignedName;
   final DateTime? declDeclarationDate;
 
+  // ── Efada (CNSS 2M) ─────────────────────────────────────────────
+  final String? efadaInstitutionName;
+  final String? efadaInstitutionNssfNum;
+  final String? efadaEmployeeName;
+  final String? efadaEmployeeNssfNum;
+  final String? efadaIllnessDuration;
+  final String? efadaDistribution;
+  // Work months 1–7
+  final String? efadaMonth1; final String? efadaDays1;
+  final String? efadaFrom1_1; final String? efadaTo1_1;
+  final String? efadaFrom2_1; final String? efadaTo2_1;
+  final String? efadaFrom3_1; final String? efadaTo3_1;
+  final String? efadaMonth2; final String? efadaDays2;
+  final String? efadaFrom1_2; final String? efadaTo1_2;
+  final String? efadaFrom2_2; final String? efadaTo2_2;
+  final String? efadaFrom3_2; final String? efadaTo3_2;
+  final String? efadaMonth3; final String? efadaDays3;
+  final String? efadaFrom1_3; final String? efadaTo1_3;
+  final String? efadaFrom2_3; final String? efadaTo2_3;
+  final String? efadaFrom3_3; final String? efadaTo3_3;
+  final String? efadaMonth4; final String? efadaDays4;
+  final String? efadaFrom1_4; final String? efadaTo1_4;
+  final String? efadaFrom2_4; final String? efadaTo2_4;
+  final String? efadaFrom3_4; final String? efadaTo3_4;
+  final String? efadaMonth5; final String? efadaDays5;
+  final String? efadaFrom1_5; final String? efadaTo1_5;
+  final String? efadaFrom2_5; final String? efadaTo2_5;
+  final String? efadaFrom3_5; final String? efadaTo3_5;
+  final String? efadaMonth6; final String? efadaDays6;
+  final String? efadaFrom1_6; final String? efadaTo1_6;
+  final String? efadaFrom2_6; final String? efadaTo2_6;
+  final String? efadaFrom3_6; final String? efadaTo3_6;
+  final String? efadaMonth7; final String? efadaDays7;
+  final String? efadaFrom1_7; final String? efadaTo1_7;
+  final String? efadaFrom2_7; final String? efadaTo2_7;
+  final String? efadaFrom3_7; final String? efadaTo3_7;
+  // Salary rows 1–4
+  final String? efadaTotalAmount;
+  final String? efadaSalMonth1; final String? efadaSalPaid1;
+  final String? efadaSalMonth2; final String? efadaSalPaid2;
+  final String? efadaSalMonth3; final String? efadaSalPaid3;
+  final String? efadaSalMonth4; final String? efadaSalPaid4;
+  // Absence / return
+  final String? efadaAbsenceDate;
+  final bool? efadaReturned;
+  final String? efadaReturnDate;
+  final bool? efadaNotReturned;
+  final String? efadaNotReturnedDate;
+  // Illness origin
+  final bool? efadaWorkRelated;
+  final bool? efadaNotWorkRelated;
+  // Salary during illness
+  final bool? efadaSalaryStopped;
+  final bool? efadaSalaryContinued;
+  // Signature
+  final String? efadaResponsibleName;
+  final String? efadaCity;
+  final String? efadaSignDate;
+
   Employee({
     required this.id,
     required this.employeeId,
@@ -311,6 +370,58 @@ class Employee {
     this.declOtherEmployerInfo,
     this.declEmployeeSignedName,
     this.declDeclarationDate,
+    // Efada
+    this.efadaInstitutionName,
+    this.efadaInstitutionNssfNum,
+    this.efadaEmployeeName,
+    this.efadaEmployeeNssfNum,
+    this.efadaIllnessDuration,
+    this.efadaDistribution,
+    this.efadaMonth1, this.efadaDays1,
+    this.efadaFrom1_1, this.efadaTo1_1,
+    this.efadaFrom2_1, this.efadaTo2_1,
+    this.efadaFrom3_1, this.efadaTo3_1,
+    this.efadaMonth2, this.efadaDays2,
+    this.efadaFrom1_2, this.efadaTo1_2,
+    this.efadaFrom2_2, this.efadaTo2_2,
+    this.efadaFrom3_2, this.efadaTo3_2,
+    this.efadaMonth3, this.efadaDays3,
+    this.efadaFrom1_3, this.efadaTo1_3,
+    this.efadaFrom2_3, this.efadaTo2_3,
+    this.efadaFrom3_3, this.efadaTo3_3,
+    this.efadaMonth4, this.efadaDays4,
+    this.efadaFrom1_4, this.efadaTo1_4,
+    this.efadaFrom2_4, this.efadaTo2_4,
+    this.efadaFrom3_4, this.efadaTo3_4,
+    this.efadaMonth5, this.efadaDays5,
+    this.efadaFrom1_5, this.efadaTo1_5,
+    this.efadaFrom2_5, this.efadaTo2_5,
+    this.efadaFrom3_5, this.efadaTo3_5,
+    this.efadaMonth6, this.efadaDays6,
+    this.efadaFrom1_6, this.efadaTo1_6,
+    this.efadaFrom2_6, this.efadaTo2_6,
+    this.efadaFrom3_6, this.efadaTo3_6,
+    this.efadaMonth7, this.efadaDays7,
+    this.efadaFrom1_7, this.efadaTo1_7,
+    this.efadaFrom2_7, this.efadaTo2_7,
+    this.efadaFrom3_7, this.efadaTo3_7,
+    this.efadaTotalAmount,
+    this.efadaSalMonth1, this.efadaSalPaid1,
+    this.efadaSalMonth2, this.efadaSalPaid2,
+    this.efadaSalMonth3, this.efadaSalPaid3,
+    this.efadaSalMonth4, this.efadaSalPaid4,
+    this.efadaAbsenceDate,
+    this.efadaReturned,
+    this.efadaReturnDate,
+    this.efadaNotReturned,
+    this.efadaNotReturnedDate,
+    this.efadaWorkRelated,
+    this.efadaNotWorkRelated,
+    this.efadaSalaryStopped,
+    this.efadaSalaryContinued,
+    this.efadaResponsibleName,
+    this.efadaCity,
+    this.efadaSignDate,
   });
 
   factory Employee.fromJson(Map<String, dynamic> j) {
@@ -474,6 +585,90 @@ class Employee {
       declOtherEmployerInfo: j['decl_other_employer_info'] as String?,
       declEmployeeSignedName: j['decl_employee_signed_name'] as String?,
       declDeclarationDate: _dt(j['decl_declaration_date']),
+      // Efada fields
+      efadaInstitutionName: j['efada_institution_name'] as String?,
+      efadaInstitutionNssfNum: j['efada_institution_nssf_num'] as String?,
+      efadaEmployeeName: j['efada_employee_name'] as String?,
+      efadaEmployeeNssfNum: j['efada_employee_nssf_num'] as String?,
+      efadaIllnessDuration: j['efada_illness_duration'] as String?,
+      efadaDistribution: j['efada_distribution'] as String?,
+      efadaMonth1: j['efada_month1'] as String?,
+      efadaDays1: j['efada_days1'] as String?,
+      efadaFrom1_1: j['efada_from1_1'] as String?,
+      efadaTo1_1: j['efada_to1_1'] as String?,
+      efadaFrom2_1: j['efada_from2_1'] as String?,
+      efadaTo2_1: j['efada_to2_1'] as String?,
+      efadaFrom3_1: j['efada_from3_1'] as String?,
+      efadaTo3_1: j['efada_to3_1'] as String?,
+      efadaMonth2: j['efada_month2'] as String?,
+      efadaDays2: j['efada_days2'] as String?,
+      efadaFrom1_2: j['efada_from1_2'] as String?,
+      efadaTo1_2: j['efada_to1_2'] as String?,
+      efadaFrom2_2: j['efada_from2_2'] as String?,
+      efadaTo2_2: j['efada_to2_2'] as String?,
+      efadaFrom3_2: j['efada_from3_2'] as String?,
+      efadaTo3_2: j['efada_to3_2'] as String?,
+      efadaMonth3: j['efada_month3'] as String?,
+      efadaDays3: j['efada_days3'] as String?,
+      efadaFrom1_3: j['efada_from1_3'] as String?,
+      efadaTo1_3: j['efada_to1_3'] as String?,
+      efadaFrom2_3: j['efada_from2_3'] as String?,
+      efadaTo2_3: j['efada_to2_3'] as String?,
+      efadaFrom3_3: j['efada_from3_3'] as String?,
+      efadaTo3_3: j['efada_to3_3'] as String?,
+      efadaMonth4: j['efada_month4'] as String?,
+      efadaDays4: j['efada_days4'] as String?,
+      efadaFrom1_4: j['efada_from1_4'] as String?,
+      efadaTo1_4: j['efada_to1_4'] as String?,
+      efadaFrom2_4: j['efada_from2_4'] as String?,
+      efadaTo2_4: j['efada_to2_4'] as String?,
+      efadaFrom3_4: j['efada_from3_4'] as String?,
+      efadaTo3_4: j['efada_to3_4'] as String?,
+      efadaMonth5: j['efada_month5'] as String?,
+      efadaDays5: j['efada_days5'] as String?,
+      efadaFrom1_5: j['efada_from1_5'] as String?,
+      efadaTo1_5: j['efada_to1_5'] as String?,
+      efadaFrom2_5: j['efada_from2_5'] as String?,
+      efadaTo2_5: j['efada_to2_5'] as String?,
+      efadaFrom3_5: j['efada_from3_5'] as String?,
+      efadaTo3_5: j['efada_to3_5'] as String?,
+      efadaMonth6: j['efada_month6'] as String?,
+      efadaDays6: j['efada_days6'] as String?,
+      efadaFrom1_6: j['efada_from1_6'] as String?,
+      efadaTo1_6: j['efada_to1_6'] as String?,
+      efadaFrom2_6: j['efada_from2_6'] as String?,
+      efadaTo2_6: j['efada_to2_6'] as String?,
+      efadaFrom3_6: j['efada_from3_6'] as String?,
+      efadaTo3_6: j['efada_to3_6'] as String?,
+      efadaMonth7: j['efada_month7'] as String?,
+      efadaDays7: j['efada_days7'] as String?,
+      efadaFrom1_7: j['efada_from1_7'] as String?,
+      efadaTo1_7: j['efada_to1_7'] as String?,
+      efadaFrom2_7: j['efada_from2_7'] as String?,
+      efadaTo2_7: j['efada_to2_7'] as String?,
+      efadaFrom3_7: j['efada_from3_7'] as String?,
+      efadaTo3_7: j['efada_to3_7'] as String?,
+      efadaTotalAmount: j['efada_total_amount'] as String?,
+      efadaSalMonth1: j['efada_sal_month1'] as String?,
+      efadaSalPaid1: j['efada_sal_paid1'] as String?,
+      efadaSalMonth2: j['efada_sal_month2'] as String?,
+      efadaSalPaid2: j['efada_sal_paid2'] as String?,
+      efadaSalMonth3: j['efada_sal_month3'] as String?,
+      efadaSalPaid3: j['efada_sal_paid3'] as String?,
+      efadaSalMonth4: j['efada_sal_month4'] as String?,
+      efadaSalPaid4: j['efada_sal_paid4'] as String?,
+      efadaAbsenceDate: j['efada_absence_date'] as String?,
+      efadaReturned: j['efada_returned'] as bool?,
+      efadaReturnDate: j['efada_return_date'] as String?,
+      efadaNotReturned: j['efada_not_returned'] as bool?,
+      efadaNotReturnedDate: j['efada_not_returned_date'] as String?,
+      efadaWorkRelated: j['efada_work_related'] as bool?,
+      efadaNotWorkRelated: j['efada_not_work_related'] as bool?,
+      efadaSalaryStopped: j['efada_salary_stopped'] as bool?,
+      efadaSalaryContinued: j['efada_salary_continued'] as bool?,
+      efadaResponsibleName: j['efada_responsible_name'] as String?,
+      efadaCity: j['efada_city'] as String?,
+      efadaSignDate: j['efada_sign_date'] as String?,
     );
   }
 
@@ -530,3 +725,26 @@ class EmployeeDocument {
     );
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
