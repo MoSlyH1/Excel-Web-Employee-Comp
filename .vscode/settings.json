@@ -1,0 +1,22 @@
+{
+  // These settings stop the search (Ctrl+Shift+F) from scanning these folders
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/bower_components": true,
+    "**/dist": true,
+    "**/build": true,
+    "**/tmp": true,
+    "**/.git": true,
+    "**/*.min.js": true,
+    "**/*.map": true
+  },
+  // These settings stop VS Code from watching these folders for file changes
+  // (which constantly uses CPU and memory)
+  "files.watcherExclude": {
+    "**/node_modules/**": true,
+    "**/dist/**": true,
+    "**/build/**": true,
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true
+  }
+}

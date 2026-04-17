@@ -221,6 +221,18 @@ class Employee {
   final String? efadaCity;
   final String? efadaSignDate;
 
+  // ── Efadet Amal (CNSS 489 / إفادة عمل وراتب) ────────────────────
+  final String? efadetIncomingNumber;
+  final String? efadetIncomingDate;
+  final String? efadetOfficeName;
+  final String? efadetCompanyName;
+  final String? efadetCnssRegNum;
+  final String? efadetEmployeeName;
+  final String? efadetEmployeeRegNum;
+  final String? efadetStartDate;
+  final String? efadetMonthlySalary;
+  final String? efadetDeclarationDate;
+
   Employee({
     required this.id,
     required this.employeeId,
@@ -422,6 +434,17 @@ class Employee {
     this.efadaResponsibleName,
     this.efadaCity,
     this.efadaSignDate,
+    // Efadet Amal
+    this.efadetIncomingNumber,
+    this.efadetIncomingDate,
+    this.efadetOfficeName,
+    this.efadetCompanyName,
+    this.efadetCnssRegNum,
+    this.efadetEmployeeName,
+    this.efadetEmployeeRegNum,
+    this.efadetStartDate,
+    this.efadetMonthlySalary,
+    this.efadetDeclarationDate,
   });
 
   factory Employee.fromJson(Map<String, dynamic> j) {
@@ -669,6 +692,17 @@ class Employee {
       efadaResponsibleName: j['efada_responsible_name'] as String?,
       efadaCity: j['efada_city'] as String?,
       efadaSignDate: j['efada_sign_date'] as String?,
+      // Efadet Amal
+      efadetIncomingNumber: j['efadet_incoming_number'] as String?,
+      efadetIncomingDate: j['efadet_incoming_date'] as String?,
+      efadetOfficeName: j['efadet_office_name'] as String?,
+      efadetCompanyName: j['efadet_company_name'] as String?,
+      efadetCnssRegNum: j['efadet_cnss_reg_num'] as String?,
+      efadetEmployeeName: j['efadet_employee_name'] as String?,
+      efadetEmployeeRegNum: j['efadet_employee_reg_num'] as String?,
+      efadetStartDate: j['efadet_start_date'] as String?,
+      efadetMonthlySalary: j['efadet_monthly_salary'] as String?,
+      efadetDeclarationDate: j['efadet_declaration_date'] as String?,
     );
   }
 
@@ -725,26 +759,3 @@ class EmployeeDocument {
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -23,17 +23,16 @@ class ApiService {
     return Employee.fromJson(json.decode(response.body));
   }
 
-
   static Future<void> saveR7Annual(int year, Map<String, dynamic> data) async {
-  final response = await http.post(
-    Uri.parse('$baseUrl/r7/annual/$year/save'),
-    headers: {'Content-Type': 'application/json'},
-    body: json.encode(data),
-  );
-  if (response.statusCode != 200) {
-    throw Exception('Failed to save R7: ${response.body}');
+    final response = await http.post(
+      Uri.parse('$baseUrl/r7/annual/$year/save'),
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode(data),
+    );
+    if (response.statusCode != 200) {
+      throw Exception('Failed to save R7: ${response.body}');
+    }
   }
-}
 
   static Future<Employee> addEmployee(Map<String, dynamic> data) async {
     final response = await http.post(
@@ -205,11 +204,11 @@ class ApiService {
 
   // ─── FORM SAVES ──────────────────────────────────────────
 
-static Future<List<Map<String, dynamic>>> getDepartedEmployees() async {
-  final response = await http.get(Uri.parse('$baseUrl/employees/departed'));
-  if (response.statusCode != 200) return [];
-  return List<Map<String, dynamic>>.from(json.decode(response.body));
-}
+  static Future<List<Map<String, dynamic>>> getDepartedEmployees() async {
+    final response = await http.get(Uri.parse('$baseUrl/employees/departed'));
+    if (response.statusCode != 200) return [];
+    return List<Map<String, dynamic>>.from(json.decode(response.body));
+  }
 
   static Future<Employee> saveR3Data(
     int employeeId,
@@ -220,11 +219,9 @@ static Future<List<Map<String, dynamic>>> getDepartedEmployees() async {
       headers: {'Content-Type': 'application/json'},
       body: json.encode(data),
     );
-
     if (response.statusCode != 200) {
       throw Exception('Failed to save R3 data: ${response.body}');
     }
-
     return Employee.fromJson(json.decode(response.body));
   }
 
@@ -237,43 +234,11 @@ static Future<List<Map<String, dynamic>>> getDepartedEmployees() async {
       headers: {'Content-Type': 'application/json'},
       body: json.encode(data),
     );
-
     if (response.statusCode != 200) {
       throw Exception('Failed to save E3lam data: ${response.body}');
     }
-
     return Employee.fromJson(json.decode(response.body));
   }
-  // Add these methods to the existing ApiService class
-
-// ── R7 ANNUAL ─────────────────────────────────────────────
-
-static Future<Map<String, dynamic>> autoPopulateR7(int year) async {
-  final response = await http.post(
-    Uri.parse('$baseUrl/r7/auto-populate/$year'),
-    headers: {'Content-Type': 'application/json'},
-  );
-  if (response.statusCode != 200) {
-    throw Exception('Failed to auto-populate R7: ${response.body}');
-  }
-  return Map<String, dynamic>.from(json.decode(response.body));
-}
-
-static Future<Map<String, dynamic>?> getR7Annual(int year) async {
-  final response = await http.get(Uri.parse('$baseUrl/r7/annual/$year'));
-  if (response.statusCode == 200) {
-    return Map<String, dynamic>.from(json.decode(response.body));
-  }
-  return null;
-}
-
-static Future<Map<String, dynamic>?> getLatestR7() async {
-  final response = await http.get(Uri.parse('$baseUrl/r7/latest'));
-  if (response.statusCode == 200) {
-    return Map<String, dynamic>.from(json.decode(response.body));
-  }
-  return null;
-}
 
   static Future<Employee> saveR4Data(
     int employeeId,
@@ -284,39 +249,81 @@ static Future<Map<String, dynamic>?> getLatestR7() async {
       headers: {'Content-Type': 'application/json'},
       body: json.encode(data),
     );
-
     if (response.statusCode != 200) {
       throw Exception('Failed to save R4 data: ${response.body}');
     }
-
     return Employee.fromJson(json.decode(response.body));
   }
 
-  static Future<void> saveR7Data(Map<String, dynamic> data) async {
-  debugPrint('saveR7Data sending: ${json.encode(data)}');
-
-  final response = await http.post(
-    Uri.parse('$baseUrl/r7'),
-    headers: {'Content-Type': 'application/json'},
-    body: json.encode(data),
-  );
-
-  debugPrint('saveR7Data response: ${response.statusCode}');
-  debugPrint('saveR7Data body: ${response.body}');
-
-  if (response.statusCode != 200 && response.statusCode != 201) {
-    throw Exception('Failed to save R7: ${response.body}');
+  // ── NEW ───────────────────────────────────────────────────
+  static Future<Employee> saveEfadetAmalData(
+    int employeeId,
+    Map<String, dynamic> data,
+  ) async {
+    final response = await http.put(
+      Uri.parse('$baseUrl/employees/$employeeId'),
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode(data),
+    );
+    if (response.statusCode != 200) {
+      throw Exception('Failed to save Efadet Amal data: ${response.body}');
+    }
+    return Employee.fromJson(json.decode(response.body));
   }
-}
+
+  // ─── R7 ANNUAL ───────────────────────────────────────────
+
+  static Future<Map<String, dynamic>> autoPopulateR7(int year) async {
+    final response = await http.post(
+      Uri.parse('$baseUrl/r7/auto-populate/$year'),
+      headers: {'Content-Type': 'application/json'},
+    );
+    if (response.statusCode != 200) {
+      throw Exception('Failed to auto-populate R7: ${response.body}');
+    }
+    return Map<String, dynamic>.from(json.decode(response.body));
+  }
+
+  static Future<Map<String, dynamic>?> getR7Annual(int year) async {
+    final response = await http.get(Uri.parse('$baseUrl/r7/annual/$year'));
+    if (response.statusCode == 200) {
+      return Map<String, dynamic>.from(json.decode(response.body));
+    }
+    return null;
+  }
+
+  static Future<Map<String, dynamic>?> getLatestR7() async {
+    final response = await http.get(Uri.parse('$baseUrl/r7/latest'));
+    if (response.statusCode == 200) {
+      return Map<String, dynamic>.from(json.decode(response.body));
+    }
+    return null;
+  }
+
+  static Future<void> saveR7Data(Map<String, dynamic> data) async {
+    debugPrint('saveR7Data sending: ${json.encode(data)}');
+
+    final response = await http.post(
+      Uri.parse('$baseUrl/r7'),
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode(data),
+    );
+
+    debugPrint('saveR7Data response: ${response.statusCode}');
+    debugPrint('saveR7Data body: ${response.body}');
+
+    if (response.statusCode != 200 && response.statusCode != 201) {
+      throw Exception('Failed to save R7: ${response.body}');
+    }
+  }
+
   static Future<Map<String, dynamic>?> getR7Data(int employeeId) async {
     final response = await http.get(
       Uri.parse('$baseUrl/r7/$employeeId'),
     );
-
     if (response.statusCode == 200) {
       return json.decode(response.body);
     }
-
     return null;
   }
 }

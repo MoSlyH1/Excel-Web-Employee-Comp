@@ -10,9 +10,10 @@ import 'r4_form_dialog.dart';
 import 'e3lam_form_dialog.dart';
 import 'r7_form_dialog.dart';
 import 'tasryh_zawjaa_form_dialog.dart';
-import 'declaration_employee_form_dialog.dart'; // ← NEW
-import 'edit_employee_dialog.dart'; // ← NEW
-import 'efada_form_dialog.dart'; // ← NEW
+import 'declaration_employee_form_dialog.dart';
+import 'edit_employee_dialog.dart';
+import 'efada_form_dialog.dart';
+import 'efadet_3amal_form_dialog.dart'; // ← NEW
 
 class EmployeeDetailDialog extends StatefulWidget {
   final Employee employee;
@@ -237,7 +238,6 @@ class _EmployeeDetailDialogState extends State<EmployeeDetailDialog> {
     );
   }
 
-  // ── NEW ────────────────────────────────────────────────────────
   void _openDeclarationEmployeeForm(BuildContext context) {
     Navigator.pop(context);
     showDialog(
@@ -248,27 +248,40 @@ class _EmployeeDetailDialogState extends State<EmployeeDetailDialog> {
       ),
     );
   }
+
   void _openEfadaForm(BuildContext context) {
-  Navigator.pop(context);
-  showDialog(
-    context: context,
-    builder: (_) => EfadaFormDialog(
-      employee: e,
-      onDataChanged: widget.onDataChanged,
-    ),
-  );
-}
+    Navigator.pop(context);
+    showDialog(
+      context: context,
+      builder: (_) => EfadaFormDialog(
+        employee: e,
+        onDataChanged: widget.onDataChanged,
+      ),
+    );
+  }
+
+  // ── NEW ────────────────────────────────────────────────────────
+  void _openEfadetAmalForm(BuildContext context) {
+    Navigator.pop(context);
+    showDialog(
+      context: context,
+      builder: (_) => EfadetAmalFormDialog(
+        employee: e,
+        onDataChanged: widget.onDataChanged,
+      ),
+    );
+  }
 
   void _openEditEmployee(BuildContext context) {
-  Navigator.pop(context);
-  showDialog(
-    context: context,
-    builder: (_) => EditEmployeeDialog(
-      employee: e,
-      onDataChanged: widget.onDataChanged,
-    ),
-  );
-}
+    Navigator.pop(context);
+    showDialog(
+      context: context,
+      builder: (_) => EditEmployeeDialog(
+        employee: e,
+        onDataChanged: widget.onDataChanged,
+      ),
+    );
+  }
 
   // ══════════════════════════════════════════════════════════════
   // BUILD
@@ -333,13 +346,13 @@ class _EmployeeDetailDialogState extends State<EmployeeDetailDialog> {
                     ),
                   ),
                   IconButton(
-  icon: const Icon(Icons.edit_rounded, color: Colors.white),
-  onPressed: () => _openEditEmployee(context),
-),
-IconButton(
-  icon: const Icon(Icons.close, color: Colors.white),
-  onPressed: () => Navigator.pop(context),
-),
+                    icon: const Icon(Icons.edit_rounded, color: Colors.white),
+                    onPressed: () => _openEditEmployee(context),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.close, color: Colors.white),
+                    onPressed: () => Navigator.pop(context),
+                  ),
                 ],
               ),
             ),
@@ -381,12 +394,10 @@ IconButton(
                       Container(
                         padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
-                          color:
-                              const Color(0xFF8E244D).withOpacity(0.07),
+                          color: const Color(0xFF8E244D).withOpacity(0.07),
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(
-                            color: const Color(0xFF8E244D)
-                                .withOpacity(0.35),
+                            color: const Color(0xFF8E244D).withOpacity(0.35),
                           ),
                         ),
                         child: Row(
@@ -394,8 +405,7 @@ IconButton(
                             Container(
                               padding: const EdgeInsets.all(8),
                               decoration: BoxDecoration(
-                                color: const Color(0xFF8E244D)
-                                    .withOpacity(0.12),
+                                color: const Color(0xFF8E244D).withOpacity(0.12),
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: const Icon(
@@ -407,8 +417,7 @@ IconButton(
                             const SizedBox(width: 12),
                             Expanded(
                               child: Column(
-                                crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   const Text(
                                     'إعلام — توليد تلقائي',
@@ -440,16 +449,13 @@ IconButton(
                                 : FilledButton(
                                     onPressed: _autoGenerateE3lam,
                                     style: FilledButton.styleFrom(
-                                      backgroundColor:
-                                          const Color(0xFF8E244D),
-                                      padding:
-                                          const EdgeInsets.symmetric(
+                                      backgroundColor: const Color(0xFF8E244D),
+                                      padding: const EdgeInsets.symmetric(
                                         horizontal: 16,
                                         vertical: 10,
                                       ),
                                       shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(8),
+                                        borderRadius: BorderRadius.circular(8),
                                       ),
                                     ),
                                     child: const Text(
@@ -470,12 +476,10 @@ IconButton(
                       child: Container(
                         padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
-                          color:
-                              const Color(0xFF00897B).withOpacity(0.06),
+                          color: const Color(0xFF00897B).withOpacity(0.06),
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(
-                            color: const Color(0xFF00897B)
-                                .withOpacity(0.2),
+                            color: const Color(0xFF00897B).withOpacity(0.2),
                           ),
                         ),
                         child: Row(
@@ -485,13 +489,12 @@ IconButton(
                             const SizedBox(width: 12),
                             Expanded(
                               child: Column(
-                                crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   const Text(
                                     'Documents',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w700),
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.w700),
                                   ),
                                   Text(
                                     '${widget.docCount} file(s) attached',
@@ -520,8 +523,7 @@ IconButton(
                       color: const Color(0xFF8E244D),
                       icon: Icons.assignment_rounded,
                       title: 'إعلام عن ترك أجير عمله في المؤسسة',
-                      subtitle:
-                          'Open form to review and edit before saving',
+                      subtitle: 'Open form to review and edit before saving',
                       onTap: () => _openE3lamForm(context),
                     ),
                     const SizedBox(height: 12),
@@ -529,8 +531,7 @@ IconButton(
                     _formTile(
                       color: const Color(0xFF2E7D32),
                       icon: Icons.business_rounded,
-                      title:
-                          'كتاب طلب تسجيل مستخدمين/أجراء (R3-1)',
+                      title: 'كتاب طلب تسجيل مستخدمين/أجراء (R3-1)',
                       subtitle: 'Fill company registration letter form',
                       onTap: () => _openR3Form(context),
                     ),
@@ -539,10 +540,8 @@ IconButton(
                     _formTile(
                       color: const Color(0xFF6A1B9A),
                       icon: Icons.assignment_ind_rounded,
-                      title:
-                          'طلب تسجيل مستخدم/أجير جديد (R3)',
-                      subtitle:
-                          'Fill employee R3 form and save to docs',
+                      title: 'طلب تسجيل مستخدم/أجير جديد (R3)',
+                      subtitle: 'Fill employee R3 form and save to docs',
                       onTap: () => _openR3EmployeeForm(context),
                     ),
                     const SizedBox(height: 12),
@@ -571,13 +570,11 @@ IconButton(
                       color: const Color(0xFF1B5E20),
                       icon: Icons.family_restroom_rounded,
                       title: 'تصريح عن الزوجة (CNSS 485 A)',
-                      subtitle:
-                          'Fill spouse declaration form and save PDF',
+                      subtitle: 'Fill spouse declaration form and save PDF',
                       onTap: () => _openTasreehZawjaForm(context),
                     ),
                     const SizedBox(height: 12),
 
-                    // ── NEW ────────────────────────────────────
                     _formTile(
                       color: const Color(0xFF4A148C),
                       icon: Icons.badge_rounded,
@@ -587,13 +584,26 @@ IconButton(
                       onTap: () => _openDeclarationEmployeeForm(context),
                     ),
                     const SizedBox(height: 12),
-_formTile(
-  color: const Color(0xFF006064),
-  icon: Icons.medical_information_rounded,
-  title: 'إفادة عمل (CNSS 2M)',
-  subtitle: 'Fill work illness declaration and save PDF',
-  onTap: () => _openEfadaForm(context),
-),
+
+                    _formTile(
+                      color: const Color(0xFF006064),
+                      icon: Icons.medical_information_rounded,
+                      title: 'إفادة عمل (CNSS 2M)',
+                      subtitle:
+                          'Fill work illness declaration and save PDF',
+                      onTap: () => _openEfadaForm(context),
+                    ),
+                    const SizedBox(height: 12),
+
+                    // ── NEW ────────────────────────────────────
+                    _formTile(
+                      color: const Color(0xFF1A237E),
+                      icon: Icons.verified_user_rounded,
+                      title: 'إفادة عمل وراتب (CNSS 489)',
+                      subtitle:
+                          'Fill work & salary certificate and save PDF',
+                      onTap: () => _openEfadetAmalForm(context),
+                    ),
 
                     const SizedBox(height: 16),
 
@@ -608,8 +618,7 @@ _formTile(
                         style: OutlinedButton.styleFrom(
                           foregroundColor: Colors.red,
                           side: BorderSide(color: Colors.red.shade300),
-                          padding:
-                              const EdgeInsets.symmetric(vertical: 14),
+                          padding: const EdgeInsets.symmetric(vertical: 14),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
@@ -659,8 +668,7 @@ _formTile(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(title,
-                      style:
-                          const TextStyle(fontWeight: FontWeight.w700)),
+                      style: const TextStyle(fontWeight: FontWeight.w700)),
                   Text(
                     subtitle,
                     style: TextStyle(
@@ -669,8 +677,7 @@ _formTile(
                 ],
               ),
             ),
-            Icon(Icons.arrow_forward_ios_rounded,
-                size: 16, color: color),
+            Icon(Icons.arrow_forward_ios_rounded, size: 16, color: color),
           ],
         ),
       ),
@@ -702,13 +709,12 @@ _formTile(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(label,
-              style:
-                  TextStyle(fontSize: 12, color: Colors.grey.shade500)),
+              style: TextStyle(fontSize: 12, color: Colors.grey.shade500)),
           const SizedBox(height: 2),
           Text(
             value ?? '—',
-            style: const TextStyle(
-                fontWeight: FontWeight.w500, fontSize: 14),
+            style:
+                const TextStyle(fontWeight: FontWeight.w500, fontSize: 14),
           ),
         ],
       ),
