@@ -1,3 +1,6 @@
+import 'package:employee_hub/widgets/bayan_mafsal_form_dialog.dart';
+import 'package:employee_hub/widgets/efadet_alkaseb_form_dialog.dart';
+import 'package:employee_hub/widgets/tafwyd_form_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -13,7 +16,10 @@ import 'tasryh_zawjaa_form_dialog.dart';
 import 'declaration_employee_form_dialog.dart';
 import 'edit_employee_dialog.dart';
 import 'efada_form_dialog.dart';
-import 'efadet_3amal_form_dialog.dart'; // ← NEW
+import 'efadet_3amal_form_dialog.dart';
+import 'efadet_thkyk_form_dialog.dart';
+import 'talab_thkyk_form_dialog.dart';
+
 
 class EmployeeDetailDialog extends StatefulWidget {
   final Employee employee;
@@ -171,7 +177,6 @@ class _EmployeeDetailDialogState extends State<EmployeeDetailDialog> {
     }
   }
 
-  // ── Navigation helpers ─────────────────────────────────────────
   void _openR3Form(BuildContext context) {
     Navigator.pop(context);
     showDialog(
@@ -260,12 +265,55 @@ class _EmployeeDetailDialogState extends State<EmployeeDetailDialog> {
     );
   }
 
-  // ── NEW ────────────────────────────────────────────────────────
   void _openEfadetAmalForm(BuildContext context) {
     Navigator.pop(context);
     showDialog(
       context: context,
       builder: (_) => EfadetAmalFormDialog(
+        employee: e,
+        onDataChanged: widget.onDataChanged,
+      ),
+    );
+  }
+
+  void _openEfadetThkykForm(BuildContext context) {
+    Navigator.pop(context);
+    showDialog(
+      context: context,
+      builder: (_) => EfadetThkykFormDialog(
+        employee: e,
+        onDataChanged: widget.onDataChanged,
+      ),
+    );
+  }
+
+  void _openEfadetAlkasebForm(BuildContext context) {
+    Navigator.pop(context);
+    showDialog(
+      context: context,
+      builder: (_) => EfadetAlkasebFormDialog(
+        employee: e,
+        onDataChanged: widget.onDataChanged,
+      ),
+    );
+  }
+
+  void _openTalabThkykForm(BuildContext context) {
+    Navigator.pop(context);
+    showDialog(
+      context: context,
+      builder: (_) => TalabThkykFormDialog(
+        employee: e,
+        onDataChanged: widget.onDataChanged,
+      ),
+    );
+  }
+
+  void _openTfwydForm(BuildContext context) {
+    Navigator.pop(context);
+    showDialog(
+      context: context,
+      builder: (_) => TfwydFormDialog(
         employee: e,
         onDataChanged: widget.onDataChanged,
       ),
@@ -283,9 +331,17 @@ class _EmployeeDetailDialogState extends State<EmployeeDetailDialog> {
     );
   }
 
-  // ══════════════════════════════════════════════════════════════
-  // BUILD
-  // ══════════════════════════════════════════════════════════════
+  void _openBayanMafsalForm(BuildContext context) {
+    Navigator.pop(context);
+    showDialog(
+      context: context,
+      builder: (_) => BayanMafsalFormDialog(
+        employee: e,
+        onDataChanged: widget.onDataChanged,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -295,7 +351,6 @@ class _EmployeeDetailDialogState extends State<EmployeeDetailDialog> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // ── Header ──────────────────────────────────────────
             Container(
               padding: const EdgeInsets.all(24),
               decoration: const BoxDecoration(
@@ -357,7 +412,6 @@ class _EmployeeDetailDialogState extends State<EmployeeDetailDialog> {
               ),
             ),
 
-            // ── Body ────────────────────────────────────────────
             Flexible(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.all(24),
@@ -389,7 +443,6 @@ class _EmployeeDetailDialogState extends State<EmployeeDetailDialog> {
                     ]),
                     const SizedBox(height: 20),
 
-                    // ── Auto E3lam banner ──────────────────────
                     if (_hasEndDate) ...[
                       Container(
                         padding: const EdgeInsets.all(16),
@@ -469,7 +522,6 @@ class _EmployeeDetailDialogState extends State<EmployeeDetailDialog> {
                       const SizedBox(height: 12),
                     ],
 
-                    // ── Documents tile ─────────────────────────
                     InkWell(
                       onTap: widget.onOpenDocs,
                       borderRadius: BorderRadius.circular(12),
@@ -518,7 +570,6 @@ class _EmployeeDetailDialogState extends State<EmployeeDetailDialog> {
 
                     const SizedBox(height: 12),
 
-                    // ── Form tiles ────────────────────────────
                     _formTile(
                       color: const Color(0xFF8E244D),
                       icon: Icons.assignment_rounded,
@@ -595,7 +646,6 @@ class _EmployeeDetailDialogState extends State<EmployeeDetailDialog> {
                     ),
                     const SizedBox(height: 12),
 
-                    // ── NEW ────────────────────────────────────
                     _formTile(
                       color: const Color(0xFF1A237E),
                       icon: Icons.verified_user_rounded,
@@ -604,10 +654,58 @@ class _EmployeeDetailDialogState extends State<EmployeeDetailDialog> {
                           'Fill work & salary certificate and save PDF',
                       onTap: () => _openEfadetAmalForm(context),
                     ),
+                    const SizedBox(height: 12),
 
+                    _formTile(
+                      color: const Color(0xFF37474F),
+                      icon: Icons.fact_check_rounded,
+                      title: 'إفادة تحقيق (CNSS 489)',
+                      subtitle:
+                          'Fill investigation certificate and save PDF',
+                      onTap: () => _openEfadetThkykForm(context),
+                    ),
+                    const SizedBox(height: 12),
+
+                    _formTile(
+                      color: const Color(0xFF006064),
+                      icon: Icons.receipt_long_rounded,
+                      title: 'إفادة بالأجر أو الكسب الأخير (CNSS 207)',
+                      subtitle:
+                          'Fill last wage / earnings certificate and save PDF',
+                      onTap: () => _openEfadetAlkasebForm(context),
+                    ),
+                    const SizedBox(height: 12),
+
+                    _formTile(
+                      color: const Color(0xFF4E342E),
+                      icon: Icons.manage_search_rounded,
+                      title: 'طلب اجراء تحقيق اجتماعي (CNSS 482)',
+                      subtitle:
+                          'Fill social investigation request and save PDF',
+                      onTap: () => _openTalabThkykForm(context),
+                    ),
+                    const SizedBox(height: 12),
+
+                    _formTile(
+                      color: const Color(0xFF4527A0),
+                      icon: Icons.receipt_long_rounded,
+                      title: 'بيان مفصّل بأجور السنتين الأخيرتين',
+                      subtitle:
+                          'Fill detailed salary statement for last 2 years and save PDF',
+                      onTap: () => _openBayanMafsalForm(context),
+                    ),
+                    const SizedBox(height: 12),
+
+                    _formTile(
+                      color: const Color(0xFF4A148C),
+                      icon: Icons.assignment_ind_rounded,
+                      title: 'تفويض باستلام الدعوة لتسديد المبالغ المستحقة',
+                      subtitle:
+                          'Fill delegation letter for end-of-service fund and save PDF',
+                      onTap: () => _openTfwydForm(context),
+                    ),
                     const SizedBox(height: 16),
 
-                    // ── Delete ─────────────────────────────────
                     SizedBox(
                       width: double.infinity,
                       child: OutlinedButton.icon(

@@ -255,7 +255,6 @@ class ApiService {
     return Employee.fromJson(json.decode(response.body));
   }
 
-  // ── NEW ───────────────────────────────────────────────────
   static Future<Employee> saveEfadetAmalData(
     int employeeId,
     Map<String, dynamic> data,
@@ -325,5 +324,59 @@ class ApiService {
       return json.decode(response.body);
     }
     return null;
+  }
+
+  static Future<Employee> saveTalabThkykData(
+      int employeeId, Map<String, dynamic> data) async {
+    final response = await http.put(
+      Uri.parse('$baseUrl/employees/$employeeId'),
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode(data),
+    );
+    if (response.statusCode != 200) {
+      throw Exception('Failed to save Talab Thkyk data: ${response.body}');
+    }
+    return Employee.fromJson(json.decode(response.body));
+  }
+
+  static Future<Employee> saveEfadetAlkasebData(
+      int employeeId, Map<String, dynamic> data) async {
+    final response = await http.put(
+      Uri.parse('$baseUrl/employees/$employeeId'),
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode(data),
+    );
+    if (response.statusCode != 200) {
+      throw Exception('Failed to save Efadet Alkaseb data: ${response.body}');
+    }
+    return Employee.fromJson(json.decode(response.body));
+  }
+
+  static Future<Employee> saveBayanMafsalData(
+      int employeeId, Map<String, dynamic> data) async {
+    final response = await http.put(
+      Uri.parse('$baseUrl/employees/$employeeId'),
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode(data),
+    );
+    if (response.statusCode != 200) {
+      throw Exception('Failed to save Bayan Mafsal data: ${response.body}');
+    }
+    return Employee.fromJson(json.decode(response.body));
+  }
+
+  // ─── TFWYD (تفويض) ───────────────────────────────────────
+
+  static Future<Employee> saveTfwydData(
+      int employeeId, Map<String, dynamic> data) async {
+    final response = await http.put(
+      Uri.parse('$baseUrl/employees/$employeeId'),
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode(data),
+    );
+    if (response.statusCode != 200) {
+      throw Exception('Failed to save Tfwyd data: ${response.body}');
+    }
+    return Employee.fromJson(json.decode(response.body));
   }
 }

@@ -233,6 +233,114 @@ class Employee {
   final String? efadetMonthlySalary;
   final String? efadetDeclarationDate;
 
+    // ── Talab Thkyk (CNSS 482 / طلب اجراء تحقيق اجتماعي) ───────────────────
+  final String? talabMaktab;                        // مكتب
+  final String? talabRaqmWared;                     // رقم الوارد
+  final String? talabTarikh;                        // تاريخ
+  final String? talabLilIstifadaAn;                 // للاستفادة عن
+  final String? talabIsmMadmoon;                    // اسم المضمون
+  final String? talabRaqmhiFiDaman;                 // رقمه في الضمان
+  final String? talabMuassasaWaRaqmuha;             // المؤسسة ورقمها
+  final String? talabAjrShahri;                     // الاجر الشهري
+  final String? talabIsmWaledWaTarikhWiladatih;     // اسم الوالد وتاريخ ولادته
+  final String? talabIsmWaledaWaTarikhWiladatiha;   // اسم الوالدة وتاريخ ولادتها
+  final String? talabQada;                          // القضاء
+  final String? talabBalda;                         // البلدة
+  final String? talabShare3;                        // شارع
+  final String? talabMilk;                          // ملك
+  final String? talabQurb;                          // قرب
+  final String? talabHatif;                         // هاتف
+  final String? talabAshiqqa1;                      // شقيق/شقيقة 1
+  final String? talabAshiqqa2;                      // شقيق/شقيقة 2
+  final String? talabAshiqqa3;                      // شقيق/شقيقة 3
+  final String? talabAshiqqa4;                      // شقيق/شقيقة 4
+  final String? talabAshiqqa5;                      // شقيق/شقيقة 5
+  final String? talabAshiqqa6;                      // شقيق/شقيقة 6
+  final String? talabAshiqqa7;                      // شقيق/شقيقة 7
+  final String? talabAshiqqa8;                      // شقيق/شقيقة 8
+  final String? talabAmalWaledeen;                  // عمل الوالد/الوالدة قبل الوفاة
+  final String? talabMadakhilWaledeen;              // مداخيل الوالدين
+  final String? talabRaqmiFilDaman;                 // رقمي في الضمان (signature)
+ 
+
+
+  final String? alkasebMuassasa;          // تفيد مؤسسة
+  final String? alkasebRaqmuha;           // رقمها
+  final String? alkasebUnwan;             // العنوان
+  final String? alkasebHatif;             // هاتف
+  final String? alkasebBaridElektroni;    // بريد إلكتروني
+  final String? alkasebIsmMadmoon;        // ان المضمون
+  final String? alkasebRaqmuhu;           // رقمه
+  final String? alkasebMinTarikh;         // عمل لحسابها من تاريخ
+  final String? alkasebLighayet;          // لغاية
+  final String? alkasebWageType;          // 'shahri'|'usbui'|'yawmi'|'saaa'
+  // Shahri
+  final String? alkasebAjrShahriAkhir;   // أجر الشهر الأخير
+  final String? alkasebFaqatShahri;       // فقط (شهري)
+  // Usbui
+  final String? alkasebAdadAsabii;        // عدد أسابيع العمل
+  final String? alkasebAjrUsbuyiAkhir;   // أجر الأسبوع الأخير
+  final String? alkasebFaqatUsbui;        // فقط (أسبوعي)
+  // Yawmi
+  final String? alkasebAdadAyyam;         // عدد أيام العمل
+  final String? alkasebAjrYawmiAkhir;    // الأجر اليومي الأخير
+  final String? alkasebFaqatYawmi;        // فقط (يومي)
+  // Saaa
+  final String? alkasebMajmuSaaat;        // مجموع ساعات العمل
+  final String? alkasebAjrSaaAkhira;     // أجر الساعة الأخيرة
+  final String? alkasebFaqatSaaa;         // فقط (بالساعة)
+  // Signature
+  final String? alkasebIsmMasool;         // اسم المسؤول
+  final String? alkasebSifatMasool;       // صفته
+  final String? alkasebAlmuwaqiAdnah;     // الموقع أدناه
+
+  // ── BayanMafsal flat fields ─────────────────────────────────────
+  // Header
+  final String? bayanIsmAjir;
+  final String? bayanRaqmuhuFiSunduq;
+  final String? bayanSana1;
+  final String? bayanSana2;
+  final String? bayanIsmMasool;
+  final String? bayanSifatMasool;
+
+  // Year 1 — months 1–12 + total
+  final String? bayanY1Basic1;   final String? bayanY1Lawahiq1;   final String? bayanY1Maqbudat1;  final String? bayanY1Majmuu1;   final String? bayanY1Mulahazat1;
+  final String? bayanY1Basic2;   final String? bayanY1Lawahiq2;   final String? bayanY1Maqbudat2;  final String? bayanY1Majmuu2;   final String? bayanY1Mulahazat2;
+  final String? bayanY1Basic3;   final String? bayanY1Lawahiq3;   final String? bayanY1Maqbudat3;  final String? bayanY1Majmuu3;   final String? bayanY1Mulahazat3;
+  final String? bayanY1Basic4;   final String? bayanY1Lawahiq4;   final String? bayanY1Maqbudat4;  final String? bayanY1Majmuu4;   final String? bayanY1Mulahazat4;
+  final String? bayanY1Basic5;   final String? bayanY1Lawahiq5;   final String? bayanY1Maqbudat5;  final String? bayanY1Majmuu5;   final String? bayanY1Mulahazat5;
+  final String? bayanY1Basic6;   final String? bayanY1Lawahiq6;   final String? bayanY1Maqbudat6;  final String? bayanY1Majmuu6;   final String? bayanY1Mulahazat6;
+  final String? bayanY1Basic7;   final String? bayanY1Lawahiq7;   final String? bayanY1Maqbudat7;  final String? bayanY1Majmuu7;   final String? bayanY1Mulahazat7;
+  final String? bayanY1Basic8;   final String? bayanY1Lawahiq8;   final String? bayanY1Maqbudat8;  final String? bayanY1Majmuu8;   final String? bayanY1Mulahazat8;
+  final String? bayanY1Basic9;   final String? bayanY1Lawahiq9;   final String? bayanY1Maqbudat9;  final String? bayanY1Majmuu9;   final String? bayanY1Mulahazat9;
+  final String? bayanY1Basic10;  final String? bayanY1Lawahiq10;  final String? bayanY1Maqbudat10; final String? bayanY1Majmuu10;  final String? bayanY1Mulahazat10;
+  final String? bayanY1Basic11;  final String? bayanY1Lawahiq11;  final String? bayanY1Maqbudat11; final String? bayanY1Majmuu11;  final String? bayanY1Mulahazat11;
+  final String? bayanY1Basic12;  final String? bayanY1Lawahiq12;  final String? bayanY1Maqbudat12; final String? bayanY1Majmuu12;  final String? bayanY1Mulahazat12;
+  final String? bayanY1TotalBasic; final String? bayanY1TotalLawahiq; final String? bayanY1TotalMaqbudat; final String? bayanY1TotalMajmuu; final String? bayanY1TotalMulahazat;
+
+  // Year 2 — months 1–12 + total
+  final String? bayanY2Basic1;   final String? bayanY2Lawahiq1;   final String? bayanY2Maqbudat1;  final String? bayanY2Majmuu1;   final String? bayanY2Mulahazat1;
+  final String? bayanY2Basic2;   final String? bayanY2Lawahiq2;   final String? bayanY2Maqbudat2;  final String? bayanY2Majmuu2;   final String? bayanY2Mulahazat2;
+  final String? bayanY2Basic3;   final String? bayanY2Lawahiq3;   final String? bayanY2Maqbudat3;  final String? bayanY2Majmuu3;   final String? bayanY2Mulahazat3;
+  final String? bayanY2Basic4;   final String? bayanY2Lawahiq4;   final String? bayanY2Maqbudat4;  final String? bayanY2Majmuu4;   final String? bayanY2Mulahazat4;
+  final String? bayanY2Basic5;   final String? bayanY2Lawahiq5;   final String? bayanY2Maqbudat5;  final String? bayanY2Majmuu5;   final String? bayanY2Mulahazat5;
+  final String? bayanY2Basic6;   final String? bayanY2Lawahiq6;   final String? bayanY2Maqbudat6;  final String? bayanY2Majmuu6;   final String? bayanY2Mulahazat6;
+  final String? bayanY2Basic7;   final String? bayanY2Lawahiq7;   final String? bayanY2Maqbudat7;  final String? bayanY2Majmuu7;   final String? bayanY2Mulahazat7;
+  final String? bayanY2Basic8;   final String? bayanY2Lawahiq8;   final String? bayanY2Maqbudat8;  final String? bayanY2Majmuu8;   final String? bayanY2Mulahazat8;
+  final String? bayanY2Basic9;   final String? bayanY2Lawahiq9;   final String? bayanY2Maqbudat9;  final String? bayanY2Majmuu9;   final String? bayanY2Mulahazat9;
+  final String? bayanY2Basic10;  final String? bayanY2Lawahiq10;  final String? bayanY2Maqbudat10; final String? bayanY2Majmuu10;  final String? bayanY2Mulahazat10;
+  final String? bayanY2Basic11;  final String? bayanY2Lawahiq11;  final String? bayanY2Maqbudat11; final String? bayanY2Majmuu11;  final String? bayanY2Mulahazat11;
+  final String? bayanY2Basic12;  final String? bayanY2Lawahiq12;  final String? bayanY2Maqbudat12; final String? bayanY2Majmuu12;  final String? bayanY2Mulahazat12;
+  final String? bayanY2TotalBasic; final String? bayanY2TotalLawahiq; final String? bayanY2TotalMaqbudat; final String? bayanY2TotalMajmuu; final String? bayanY2TotalMulahazat;
+
+ // ── Tfwyd (تفويض باستلام الدعوة لتسديد المبالغ المستحقة) ────────
+  final String? tfwydMustadei;              // المستدعي
+  final String? tfwydIsmMuassasa;           // اسم المؤسسة
+  final String? tfwydRaqmTasjilFiSunduq;   // رقم تسجيلها في الصندوق
+  final String? tfwydUnwanMuassasa;         // عنوان المؤسسة
+  final String? tfwydRaqmHatif;             // رقم الهاتف
+  final String? tfwydIsmMasoolWaSifatuh;    // اسم المسؤول وصفته
+  final String? tfwydIsmAjir;              // اسم الأجير
   Employee({
     required this.id,
     required this.employeeId,
@@ -445,6 +553,101 @@ class Employee {
     this.efadetStartDate,
     this.efadetMonthlySalary,
     this.efadetDeclarationDate,
+
+    this.talabMaktab,
+    this.talabRaqmWared,
+    this.talabTarikh,
+    this.talabLilIstifadaAn,
+    this.talabIsmMadmoon,
+    this.talabRaqmhiFiDaman,
+    this.talabMuassasaWaRaqmuha,
+    this.talabAjrShahri,
+    this.talabIsmWaledWaTarikhWiladatih,
+    this.talabIsmWaledaWaTarikhWiladatiha,
+    this.talabQada,
+    this.talabBalda,
+    this.talabShare3,
+    this.talabMilk,
+    this.talabQurb,
+    this.talabHatif,
+    this.talabAshiqqa1,
+    this.talabAshiqqa2,
+    this.talabAshiqqa3,
+    this.talabAshiqqa4,
+    this.talabAshiqqa5,
+    this.talabAshiqqa6,
+    this.talabAshiqqa7,
+    this.talabAshiqqa8,
+    this.talabAmalWaledeen,
+    this.talabMadakhilWaledeen,
+    this.talabRaqmiFilDaman,
+
+    this.alkasebMuassasa,
+    this.alkasebRaqmuha,
+    this.alkasebUnwan,
+    this.alkasebHatif,
+    this.alkasebBaridElektroni,
+    this.alkasebIsmMadmoon,
+    this.alkasebRaqmuhu,
+    this.alkasebMinTarikh,
+    this.alkasebLighayet,
+    this.alkasebWageType,
+    this.alkasebAjrShahriAkhir,
+    this.alkasebFaqatShahri,
+    this.alkasebAdadAsabii,
+    this.alkasebAjrUsbuyiAkhir,
+    this.alkasebFaqatUsbui,
+    this.alkasebAdadAyyam,
+    this.alkasebAjrYawmiAkhir,
+    this.alkasebFaqatYawmi,
+    this.alkasebMajmuSaaat,
+    this.alkasebAjrSaaAkhira,
+    this.alkasebFaqatSaaa,
+    this.alkasebIsmMasool,
+    this.alkasebSifatMasool,
+    this.alkasebAlmuwaqiAdnah,
+
+    // BayanMafsal fields
+    this.bayanIsmAjir,
+    this.bayanRaqmuhuFiSunduq,
+    this.bayanSana1,
+    this.bayanSana2,
+    this.bayanIsmMasool,
+    this.bayanSifatMasool,
+    this.bayanY1Basic1, this.bayanY1Lawahiq1, this.bayanY1Maqbudat1, this.bayanY1Majmuu1, this.bayanY1Mulahazat1,
+    this.bayanY1Basic2, this.bayanY1Lawahiq2, this.bayanY1Maqbudat2, this.bayanY1Majmuu2, this.bayanY1Mulahazat2,
+    this.bayanY1Basic3, this.bayanY1Lawahiq3, this.bayanY1Maqbudat3, this.bayanY1Majmuu3, this.bayanY1Mulahazat3,
+    this.bayanY1Basic4, this.bayanY1Lawahiq4, this.bayanY1Maqbudat4, this.bayanY1Majmuu4, this.bayanY1Mulahazat4,
+    this.bayanY1Basic5, this.bayanY1Lawahiq5, this.bayanY1Maqbudat5, this.bayanY1Majmuu5, this.bayanY1Mulahazat5,
+    this.bayanY1Basic6, this.bayanY1Lawahiq6, this.bayanY1Maqbudat6, this.bayanY1Majmuu6, this.bayanY1Mulahazat6,
+    this.bayanY1Basic7, this.bayanY1Lawahiq7, this.bayanY1Maqbudat7, this.bayanY1Majmuu7, this.bayanY1Mulahazat7,
+    this.bayanY1Basic8, this.bayanY1Lawahiq8, this.bayanY1Maqbudat8, this.bayanY1Majmuu8, this.bayanY1Mulahazat8,
+    this.bayanY1Basic9, this.bayanY1Lawahiq9, this.bayanY1Maqbudat9, this.bayanY1Majmuu9, this.bayanY1Mulahazat9,
+    this.bayanY1Basic10, this.bayanY1Lawahiq10, this.bayanY1Maqbudat10, this.bayanY1Majmuu10, this.bayanY1Mulahazat10,
+    this.bayanY1Basic11, this.bayanY1Lawahiq11, this.bayanY1Maqbudat11, this.bayanY1Majmuu11, this.bayanY1Mulahazat11,
+    this.bayanY1Basic12, this.bayanY1Lawahiq12, this.bayanY1Maqbudat12, this.bayanY1Majmuu12, this.bayanY1Mulahazat12,
+    this.bayanY1TotalBasic, this.bayanY1TotalLawahiq, this.bayanY1TotalMaqbudat, this.bayanY1TotalMajmuu, this.bayanY1TotalMulahazat,
+    this.bayanY2Basic1, this.bayanY2Lawahiq1, this.bayanY2Maqbudat1, this.bayanY2Majmuu1, this.bayanY2Mulahazat1,
+    this.bayanY2Basic2, this.bayanY2Lawahiq2, this.bayanY2Maqbudat2, this.bayanY2Majmuu2, this.bayanY2Mulahazat2,
+    this.bayanY2Basic3, this.bayanY2Lawahiq3, this.bayanY2Maqbudat3, this.bayanY2Majmuu3, this.bayanY2Mulahazat3,
+    this.bayanY2Basic4, this.bayanY2Lawahiq4, this.bayanY2Maqbudat4, this.bayanY2Majmuu4, this.bayanY2Mulahazat4,
+    this.bayanY2Basic5, this.bayanY2Lawahiq5, this.bayanY2Maqbudat5, this.bayanY2Majmuu5, this.bayanY2Mulahazat5,
+    this.bayanY2Basic6, this.bayanY2Lawahiq6, this.bayanY2Maqbudat6, this.bayanY2Majmuu6, this.bayanY2Mulahazat6,
+    this.bayanY2Basic7, this.bayanY2Lawahiq7, this.bayanY2Maqbudat7, this.bayanY2Majmuu7, this.bayanY2Mulahazat7,
+    this.bayanY2Basic8, this.bayanY2Lawahiq8, this.bayanY2Maqbudat8, this.bayanY2Majmuu8, this.bayanY2Mulahazat8,
+    this.bayanY2Basic9, this.bayanY2Lawahiq9, this.bayanY2Maqbudat9, this.bayanY2Majmuu9, this.bayanY2Mulahazat9,
+    this.bayanY2Basic10, this.bayanY2Lawahiq10, this.bayanY2Maqbudat10, this.bayanY2Majmuu10, this.bayanY2Mulahazat10,
+    this.bayanY2Basic11, this.bayanY2Lawahiq11, this.bayanY2Maqbudat11, this.bayanY2Majmuu11, this.bayanY2Mulahazat11,
+    this.bayanY2Basic12, this.bayanY2Lawahiq12, this.bayanY2Maqbudat12, this.bayanY2Majmuu12, this.bayanY2Mulahazat12,
+    this.bayanY2TotalBasic, this.bayanY2TotalLawahiq, this.bayanY2TotalMaqbudat, this.bayanY2TotalMajmuu, this.bayanY2TotalMulahazat,
+
+        this.tfwydMustadei,
+    this.tfwydIsmMuassasa,
+    this.tfwydRaqmTasjilFiSunduq,
+    this.tfwydUnwanMuassasa,
+    this.tfwydRaqmHatif,
+    this.tfwydIsmMasoolWaSifatuh,
+    this.tfwydIsmAjir,
   });
 
   factory Employee.fromJson(Map<String, dynamic> j) {
@@ -703,7 +906,215 @@ class Employee {
       efadetStartDate: j['efadet_start_date'] as String?,
       efadetMonthlySalary: j['efadet_monthly_salary'] as String?,
       efadetDeclarationDate: j['efadet_declaration_date'] as String?,
+
+      talabMaktab: j['talab_maktab'] as String?,
+      talabRaqmWared: j['talab_raqm_wared'] as String?,
+      talabTarikh: j['talab_tarikh'] as String?,
+      talabLilIstifadaAn: j['talab_lil_istifada_an'] as String?,
+      talabIsmMadmoon: j['talab_ism_madmoon'] as String?,
+      talabRaqmhiFiDaman: j['talab_raqmhi_fi_daman'] as String?,
+      talabMuassasaWaRaqmuha: j['talab_muassasa_wa_raqmuha'] as String?,
+      talabAjrShahri: j['talab_ajr_shahri'] as String?,
+      talabIsmWaledWaTarikhWiladatih: j['talab_ism_waled_wa_tarikh_wiladatih'] as String?,
+      talabIsmWaledaWaTarikhWiladatiha: j['talab_ism_waleda_wa_tarikh_wiladatiha'] as String?,
+      talabQada: j['talab_qada'] as String?,
+      talabBalda: j['talab_balda'] as String?,
+      talabShare3: j['talab_share3'] as String?,
+      talabMilk: j['talab_milk'] as String?,
+      talabQurb: j['talab_qurb'] as String?,
+      talabHatif: j['talab_hatif'] as String?,
+      talabAshiqqa1: j['talab_ashiqqa1'] as String?,
+      talabAshiqqa2: j['talab_ashiqqa2'] as String?,
+      talabAshiqqa3: j['talab_ashiqqa3'] as String?,
+      talabAshiqqa4: j['talab_ashiqqa4'] as String?,
+      talabAshiqqa5: j['talab_ashiqqa5'] as String?,
+      talabAshiqqa6: j['talab_ashiqqa6'] as String?,
+      talabAshiqqa7: j['talab_ashiqqa7'] as String?,
+      talabAshiqqa8: j['talab_ashiqqa8'] as String?,
+      talabAmalWaledeen: j['talab_amal_waledeen'] as String?,
+      talabMadakhilWaledeen: j['talab_madakhil_waledeen'] as String?,
+      talabRaqmiFilDaman: j['talab_raqmi_fil_daman'] as String?,
+
+      alkasebMuassasa: j['alkaseb_muassasa'] as String?,
+      alkasebRaqmuha: j['alkaseb_raqmuha'] as String?,
+      alkasebUnwan: j['alkaseb_unwan'] as String?,
+      alkasebHatif: j['alkaseb_hatif'] as String?,
+      alkasebBaridElektroni: j['alkaseb_barid_elektroni'] as String?,
+      alkasebIsmMadmoon: j['alkaseb_ism_madmoon'] as String?,
+      alkasebRaqmuhu: j['alkaseb_raqmuhu'] as String?,
+      alkasebMinTarikh: j['alkaseb_min_tarikh'] as String?,
+      alkasebLighayet: j['alkaseb_lighayet'] as String?,
+      alkasebWageType: j['alkaseb_wage_type'] as String?,
+      alkasebAjrShahriAkhir: j['alkaseb_ajr_shahri_akhir'] as String?,
+      alkasebFaqatShahri: j['alkaseb_faqat_shahri'] as String?,
+      alkasebAdadAsabii: j['alkaseb_adad_asabii'] as String?,
+      alkasebAjrUsbuyiAkhir: j['alkaseb_ajr_usbuy_akhir'] as String?,
+      alkasebFaqatUsbui: j['alkaseb_faqat_usbui'] as String?,
+      alkasebAdadAyyam: j['alkaseb_adad_ayyam'] as String?,
+      alkasebAjrYawmiAkhir: j['alkaseb_ajr_yawmi_akhir'] as String?,
+      alkasebFaqatYawmi: j['alkaseb_faqat_yawmi'] as String?,
+      alkasebMajmuSaaat: j['alkaseb_majmu_saaat'] as String?,
+      alkasebAjrSaaAkhira: j['alkaseb_ajr_saa_akhira'] as String?,
+      alkasebFaqatSaaa: j['alkaseb_faqat_saaa'] as String?,
+      alkasebIsmMasool: j['alkaseb_ism_masool'] as String?,
+      alkasebSifatMasool: j['alkaseb_sifat_masool'] as String?,
+      alkasebAlmuwaqiAdnah: j['alkaseb_almuwaqi_adnah'] as String?,
+
+      // BayanMafsal fields
+      bayanIsmAjir:            j['bayan_ism_ajir'] as String?,
+      bayanRaqmuhuFiSunduq:    j['bayan_raqmuhu_fi_sunduq'] as String?,
+      bayanSana1:              j['bayan_sana1'] as String?,
+      bayanSana2:              j['bayan_sana2'] as String?,
+      bayanIsmMasool:          j['bayan_ism_masool'] as String?,
+      bayanSifatMasool:        j['bayan_sifat_masool'] as String?,
+
+      bayanY1Basic1:   j['bayan_y1_basic_1'] as String?,   bayanY1Lawahiq1:   j['bayan_y1_lawahiq_1'] as String?,   bayanY1Maqbudat1:  j['bayan_y1_maqbudat_1'] as String?,   bayanY1Majmuu1:   j['bayan_y1_majmuu_1'] as String?,   bayanY1Mulahazat1: j['bayan_y1_mulahazat_1'] as String?,
+      bayanY1Basic2:   j['bayan_y1_basic_2'] as String?,   bayanY1Lawahiq2:   j['bayan_y1_lawahiq_2'] as String?,   bayanY1Maqbudat2:  j['bayan_y1_maqbudat_2'] as String?,   bayanY1Majmuu2:   j['bayan_y1_majmuu_2'] as String?,   bayanY1Mulahazat2: j['bayan_y1_mulahazat_2'] as String?,
+      bayanY1Basic3:   j['bayan_y1_basic_3'] as String?,   bayanY1Lawahiq3:   j['bayan_y1_lawahiq_3'] as String?,   bayanY1Maqbudat3:  j['bayan_y1_maqbudat_3'] as String?,   bayanY1Majmuu3:   j['bayan_y1_majmuu_3'] as String?,   bayanY1Mulahazat3: j['bayan_y1_mulahazat_3'] as String?,
+      bayanY1Basic4:   j['bayan_y1_basic_4'] as String?,   bayanY1Lawahiq4:   j['bayan_y1_lawahiq_4'] as String?,   bayanY1Maqbudat4:  j['bayan_y1_maqbudat_4'] as String?,   bayanY1Majmuu4:   j['bayan_y1_majmuu_4'] as String?,   bayanY1Mulahazat4: j['bayan_y1_mulahazat_4'] as String?,
+      bayanY1Basic5:   j['bayan_y1_basic_5'] as String?,   bayanY1Lawahiq5:   j['bayan_y1_lawahiq_5'] as String?,   bayanY1Maqbudat5:  j['bayan_y1_maqbudat_5'] as String?,   bayanY1Majmuu5:   j['bayan_y1_majmuu_5'] as String?,   bayanY1Mulahazat5: j['bayan_y1_mulahazat_5'] as String?,
+      bayanY1Basic6:   j['bayan_y1_basic_6'] as String?,   bayanY1Lawahiq6:   j['bayan_y1_lawahiq_6'] as String?,   bayanY1Maqbudat6:  j['bayan_y1_maqbudat_6'] as String?,   bayanY1Majmuu6:   j['bayan_y1_majmuu_6'] as String?,   bayanY1Mulahazat6: j['bayan_y1_mulahazat_6'] as String?,
+      bayanY1Basic7:   j['bayan_y1_basic_7'] as String?,   bayanY1Lawahiq7:   j['bayan_y1_lawahiq_7'] as String?,   bayanY1Maqbudat7:  j['bayan_y1_maqbudat_7'] as String?,   bayanY1Majmuu7:   j['bayan_y1_majmuu_7'] as String?,   bayanY1Mulahazat7: j['bayan_y1_mulahazat_7'] as String?,
+      bayanY1Basic8:   j['bayan_y1_basic_8'] as String?,   bayanY1Lawahiq8:   j['bayan_y1_lawahiq_8'] as String?,   bayanY1Maqbudat8:  j['bayan_y1_maqbudat_8'] as String?,   bayanY1Majmuu8:   j['bayan_y1_majmuu_8'] as String?,   bayanY1Mulahazat8: j['bayan_y1_mulahazat_8'] as String?,
+      bayanY1Basic9:   j['bayan_y1_basic_9'] as String?,   bayanY1Lawahiq9:   j['bayan_y1_lawahiq_9'] as String?,   bayanY1Maqbudat9:  j['bayan_y1_maqbudat_9'] as String?,   bayanY1Majmuu9:   j['bayan_y1_majmuu_9'] as String?,   bayanY1Mulahazat9: j['bayan_y1_mulahazat_9'] as String?,
+      bayanY1Basic10:  j['bayan_y1_basic_10'] as String?,  bayanY1Lawahiq10:  j['bayan_y1_lawahiq_10'] as String?,  bayanY1Maqbudat10: j['bayan_y1_maqbudat_10'] as String?,  bayanY1Majmuu10:  j['bayan_y1_majmuu_10'] as String?,  bayanY1Mulahazat10:j['bayan_y1_mulahazat_10'] as String?,
+      bayanY1Basic11:  j['bayan_y1_basic_11'] as String?,  bayanY1Lawahiq11:  j['bayan_y1_lawahiq_11'] as String?,  bayanY1Maqbudat11: j['bayan_y1_maqbudat_11'] as String?,  bayanY1Majmuu11:  j['bayan_y1_majmuu_11'] as String?,  bayanY1Mulahazat11:j['bayan_y1_mulahazat_11'] as String?,
+      bayanY1Basic12:  j['bayan_y1_basic_12'] as String?,  bayanY1Lawahiq12:  j['bayan_y1_lawahiq_12'] as String?,  bayanY1Maqbudat12: j['bayan_y1_maqbudat_12'] as String?,  bayanY1Majmuu12:  j['bayan_y1_majmuu_12'] as String?,  bayanY1Mulahazat12:j['bayan_y1_mulahazat_12'] as String?,
+      bayanY1TotalBasic:   j['bayan_y1_total_basic'] as String?,   bayanY1TotalLawahiq:  j['bayan_y1_total_lawahiq'] as String?,  bayanY1TotalMaqbudat: j['bayan_y1_total_maqbudat'] as String?,  bayanY1TotalMajmuu: j['bayan_y1_total_majmuu'] as String?, bayanY1TotalMulahazat: j['bayan_y1_total_mulahazat'] as String?,
+
+      bayanY2Basic1:   j['bayan_y2_basic_1'] as String?,   bayanY2Lawahiq1:   j['bayan_y2_lawahiq_1'] as String?,   bayanY2Maqbudat1:  j['bayan_y2_maqbudat_1'] as String?,   bayanY2Majmuu1:   j['bayan_y2_majmuu_1'] as String?,   bayanY2Mulahazat1: j['bayan_y2_mulahazat_1'] as String?,
+      bayanY2Basic2:   j['bayan_y2_basic_2'] as String?,   bayanY2Lawahiq2:   j['bayan_y2_lawahiq_2'] as String?,   bayanY2Maqbudat2:  j['bayan_y2_maqbudat_2'] as String?,   bayanY2Majmuu2:   j['bayan_y2_majmuu_2'] as String?,   bayanY2Mulahazat2: j['bayan_y2_mulahazat_2'] as String?,
+      bayanY2Basic3:   j['bayan_y2_basic_3'] as String?,   bayanY2Lawahiq3:   j['bayan_y2_lawahiq_3'] as String?,   bayanY2Maqbudat3:  j['bayan_y2_maqbudat_3'] as String?,   bayanY2Majmuu3:   j['bayan_y2_majmuu_3'] as String?,   bayanY2Mulahazat3: j['bayan_y2_mulahazat_3'] as String?,
+      bayanY2Basic4:   j['bayan_y2_basic_4'] as String?,   bayanY2Lawahiq4:   j['bayan_y2_lawahiq_4'] as String?,   bayanY2Maqbudat4:  j['bayan_y2_maqbudat_4'] as String?,   bayanY2Majmuu4:   j['bayan_y2_majmuu_4'] as String?,   bayanY2Mulahazat4: j['bayan_y2_mulahazat_4'] as String?,
+      bayanY2Basic5:   j['bayan_y2_basic_5'] as String?,   bayanY2Lawahiq5:   j['bayan_y2_lawahiq_5'] as String?,   bayanY2Maqbudat5:  j['bayan_y2_maqbudat_5'] as String?,   bayanY2Majmuu5:   j['bayan_y2_majmuu_5'] as String?,   bayanY2Mulahazat5: j['bayan_y2_mulahazat_5'] as String?,
+      bayanY2Basic6:   j['bayan_y2_basic_6'] as String?,   bayanY2Lawahiq6:   j['bayan_y2_lawahiq_6'] as String?,   bayanY2Maqbudat6:  j['bayan_y2_maqbudat_6'] as String?,   bayanY2Majmuu6:   j['bayan_y2_majmuu_6'] as String?,   bayanY2Mulahazat6: j['bayan_y2_mulahazat_6'] as String?,
+      bayanY2Basic7:   j['bayan_y2_basic_7'] as String?,   bayanY2Lawahiq7:   j['bayan_y2_lawahiq_7'] as String?,   bayanY2Maqbudat7:  j['bayan_y2_maqbudat_7'] as String?,   bayanY2Majmuu7:   j['bayan_y2_majmuu_7'] as String?,   bayanY2Mulahazat7: j['bayan_y2_mulahazat_7'] as String?,
+      bayanY2Basic8:   j['bayan_y2_basic_8'] as String?,   bayanY2Lawahiq8:   j['bayan_y2_lawahiq_8'] as String?,   bayanY2Maqbudat8:  j['bayan_y2_maqbudat_8'] as String?,   bayanY2Majmuu8:   j['bayan_y2_majmuu_8'] as String?,   bayanY2Mulahazat8: j['bayan_y2_mulahazat_8'] as String?,
+      bayanY2Basic9:   j['bayan_y2_basic_9'] as String?,   bayanY2Lawahiq9:   j['bayan_y2_lawahiq_9'] as String?,   bayanY2Maqbudat9:  j['bayan_y2_maqbudat_9'] as String?,   bayanY2Majmuu9:   j['bayan_y2_majmuu_9'] as String?,   bayanY2Mulahazat9: j['bayan_y2_mulahazat_9'] as String?,
+      bayanY2Basic10:  j['bayan_y2_basic_10'] as String?,  bayanY2Lawahiq10:  j['bayan_y2_lawahiq_10'] as String?,  bayanY2Maqbudat10: j['bayan_y2_maqbudat_10'] as String?,  bayanY2Majmuu10:  j['bayan_y2_majmuu_10'] as String?,  bayanY2Mulahazat10:j['bayan_y2_mulahazat_10'] as String?,
+      bayanY2Basic11:  j['bayan_y2_basic_11'] as String?,  bayanY2Lawahiq11:  j['bayan_y2_lawahiq_11'] as String?,  bayanY2Maqbudat11: j['bayan_y2_maqbudat_11'] as String?,  bayanY2Majmuu11:  j['bayan_y2_majmuu_11'] as String?,  bayanY2Mulahazat11:j['bayan_y2_mulahazat_11'] as String?,
+      bayanY2Basic12:  j['bayan_y2_basic_12'] as String?,  bayanY2Lawahiq12:  j['bayan_y2_lawahiq_12'] as String?,  bayanY2Maqbudat12: j['bayan_y2_maqbudat_12'] as String?,  bayanY2Majmuu12:  j['bayan_y2_majmuu_12'] as String?,  bayanY2Mulahazat12:j['bayan_y2_mulahazat_12'] as String?,
+      bayanY2TotalBasic:   j['bayan_y2_total_basic'] as String?,   bayanY2TotalLawahiq:  j['bayan_y2_total_lawahiq'] as String?,  bayanY2TotalMaqbudat: j['bayan_y2_total_maqbudat'] as String?,  bayanY2TotalMajmuu: j['bayan_y2_total_majmuu'] as String?, bayanY2TotalMulahazat: j['bayan_y2_total_mulahazat'] as String?,
+       tfwydMustadei:            j['tfwyd_mustadei'] as String?,
+      tfwydIsmMuassasa:         j['tfwyd_ism_muassasa'] as String?,
+      tfwydRaqmTasjilFiSunduq:  j['tfwyd_raqm_tasjil_fi_sunduq'] as String?,
+      tfwydUnwanMuassasa:       j['tfwyd_unwan_muassasa'] as String?,
+      tfwydRaqmHatif:           j['tfwyd_raqm_hatif'] as String?,
+      tfwydIsmMasoolWaSifatuh:  j['tfwyd_ism_masool_wa_sifatuh'] as String?,
+      tfwydIsmAjir:             j['tfwyd_ism_ajir'] as String?,
     );
+  }
+
+  // ── BayanMafsal getter helpers (flat fields) ────────────────────
+  String? bayanY1Basic(int m) {
+    switch(m) {
+      case 1: return bayanY1Basic1; case 2: return bayanY1Basic2;
+      case 3: return bayanY1Basic3; case 4: return bayanY1Basic4;
+      case 5: return bayanY1Basic5; case 6: return bayanY1Basic6;
+      case 7: return bayanY1Basic7; case 8: return bayanY1Basic8;
+      case 9: return bayanY1Basic9; case 10: return bayanY1Basic10;
+      case 11: return bayanY1Basic11; case 12: return bayanY1Basic12;
+      default: return null;
+    }
+  }
+  String? bayanY1Lawahiq(int m) {
+    switch(m) {
+      case 1: return bayanY1Lawahiq1; case 2: return bayanY1Lawahiq2;
+      case 3: return bayanY1Lawahiq3; case 4: return bayanY1Lawahiq4;
+      case 5: return bayanY1Lawahiq5; case 6: return bayanY1Lawahiq6;
+      case 7: return bayanY1Lawahiq7; case 8: return bayanY1Lawahiq8;
+      case 9: return bayanY1Lawahiq9; case 10: return bayanY1Lawahiq10;
+      case 11: return bayanY1Lawahiq11; case 12: return bayanY1Lawahiq12;
+      default: return null;
+    }
+  }
+  String? bayanY1Maqbudat(int m) {
+    switch(m) {
+      case 1: return bayanY1Maqbudat1; case 2: return bayanY1Maqbudat2;
+      case 3: return bayanY1Maqbudat3; case 4: return bayanY1Maqbudat4;
+      case 5: return bayanY1Maqbudat5; case 6: return bayanY1Maqbudat6;
+      case 7: return bayanY1Maqbudat7; case 8: return bayanY1Maqbudat8;
+      case 9: return bayanY1Maqbudat9; case 10: return bayanY1Maqbudat10;
+      case 11: return bayanY1Maqbudat11; case 12: return bayanY1Maqbudat12;
+      default: return null;
+    }
+  }
+  String? bayanY1Majmuu(int m) {
+    switch(m) {
+      case 1: return bayanY1Majmuu1; case 2: return bayanY1Majmuu2;
+      case 3: return bayanY1Majmuu3; case 4: return bayanY1Majmuu4;
+      case 5: return bayanY1Majmuu5; case 6: return bayanY1Majmuu6;
+      case 7: return bayanY1Majmuu7; case 8: return bayanY1Majmuu8;
+      case 9: return bayanY1Majmuu9; case 10: return bayanY1Majmuu10;
+      case 11: return bayanY1Majmuu11; case 12: return bayanY1Majmuu12;
+      default: return null;
+    }
+  }
+  String? bayanY1Mulahazat(int m) {
+    switch(m) {
+      case 1: return bayanY1Mulahazat1; case 2: return bayanY1Mulahazat2;
+      case 3: return bayanY1Mulahazat3; case 4: return bayanY1Mulahazat4;
+      case 5: return bayanY1Mulahazat5; case 6: return bayanY1Mulahazat6;
+      case 7: return bayanY1Mulahazat7; case 8: return bayanY1Mulahazat8;
+      case 9: return bayanY1Mulahazat9; case 10: return bayanY1Mulahazat10;
+      case 11: return bayanY1Mulahazat11; case 12: return bayanY1Mulahazat12;
+      default: return null;
+    }
+  }
+  String? bayanY2Basic(int m) {
+    switch(m) {
+      case 1: return bayanY2Basic1; case 2: return bayanY2Basic2;
+      case 3: return bayanY2Basic3; case 4: return bayanY2Basic4;
+      case 5: return bayanY2Basic5; case 6: return bayanY2Basic6;
+      case 7: return bayanY2Basic7; case 8: return bayanY2Basic8;
+      case 9: return bayanY2Basic9; case 10: return bayanY2Basic10;
+      case 11: return bayanY2Basic11; case 12: return bayanY2Basic12;
+      default: return null;
+    }
+  }
+  String? bayanY2Lawahiq(int m) {
+    switch(m) {
+      case 1: return bayanY2Lawahiq1; case 2: return bayanY2Lawahiq2;
+      case 3: return bayanY2Lawahiq3; case 4: return bayanY2Lawahiq4;
+      case 5: return bayanY2Lawahiq5; case 6: return bayanY2Lawahiq6;
+      case 7: return bayanY2Lawahiq7; case 8: return bayanY2Lawahiq8;
+      case 9: return bayanY2Lawahiq9; case 10: return bayanY2Lawahiq10;
+      case 11: return bayanY2Lawahiq11; case 12: return bayanY2Lawahiq12;
+      default: return null;
+    }
+  }
+  String? bayanY2Maqbudat(int m) {
+    switch(m) {
+      case 1: return bayanY2Maqbudat1; case 2: return bayanY2Maqbudat2;
+      case 3: return bayanY2Maqbudat3; case 4: return bayanY2Maqbudat4;
+      case 5: return bayanY2Maqbudat5; case 6: return bayanY2Maqbudat6;
+      case 7: return bayanY2Maqbudat7; case 8: return bayanY2Maqbudat8;
+      case 9: return bayanY2Maqbudat9; case 10: return bayanY2Maqbudat10;
+      case 11: return bayanY2Maqbudat11; case 12: return bayanY2Maqbudat12;
+      default: return null;
+    }
+  }
+  String? bayanY2Majmuu(int m) {
+    switch(m) {
+      case 1: return bayanY2Majmuu1; case 2: return bayanY2Majmuu2;
+      case 3: return bayanY2Majmuu3; case 4: return bayanY2Majmuu4;
+      case 5: return bayanY2Majmuu5; case 6: return bayanY2Majmuu6;
+      case 7: return bayanY2Majmuu7; case 8: return bayanY2Majmuu8;
+      case 9: return bayanY2Majmuu9; case 10: return bayanY2Majmuu10;
+      case 11: return bayanY2Majmuu11; case 12: return bayanY2Majmuu12;
+      default: return null;
+    }
+  }
+  String? bayanY2Mulahazat(int m) {
+    switch(m) {
+      case 1: return bayanY2Mulahazat1; case 2: return bayanY2Mulahazat2;
+      case 3: return bayanY2Mulahazat3; case 4: return bayanY2Mulahazat4;
+      case 5: return bayanY2Mulahazat5; case 6: return bayanY2Mulahazat6;
+      case 7: return bayanY2Mulahazat7; case 8: return bayanY2Mulahazat8;
+      case 9: return bayanY2Mulahazat9; case 10: return bayanY2Mulahazat10;
+      case 11: return bayanY2Mulahazat11; case 12: return bayanY2Mulahazat12;
+      default: return null;
+    }
   }
 
   static double? _d(dynamic v) {

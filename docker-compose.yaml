@@ -13,6 +13,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./database/employee_Hub_backup.sql:/docker-entrypoint-initdb.d/init.sql
+
   backend:
     build: ./Backend
     container_name: employee_backend
@@ -26,6 +27,8 @@ services:
       DB_NAME: employeehub
       DB_USER: postgres
       DB_PASSWORD: postgres
+    volumes:                          # ✅ same level as environment, not inside it
+      - uploads_data:/app/uploads
 
   frontend:
     build: ./Frontend
@@ -34,6 +37,9 @@ services:
       - "8080:80"
     depends_on:
       - backend
+    volumes:
+      - uploads_data:/app/uploads     # ✅ changed from bind mount to named volume
 
 volumes:
   postgres_data:
+  uploads_data:
